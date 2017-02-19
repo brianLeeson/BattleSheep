@@ -1,4 +1,4 @@
-BJS specifies which files to compile as part of the project
+#OBJS specifies which files to compile as part of the project
 OBJS = 01_hello_SDL.cpp
 
 #CC specifies which compiler we're using
@@ -17,4 +17,3 @@ OBJ_NAME = 01_hello_SDL
 #This is the target that compiles our executable
 all : $(OBJS)
 	$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
-
