@@ -2,6 +2,7 @@
  *      Author: Brian Leeson
  */
 
+
 #ifndef SPACE_HPP_
 #define SPACE_HPP_
 
