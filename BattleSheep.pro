@@ -26,13 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp \
     button.cpp \
     game.cpp \
-    hex.cpp \
-    hexboard.cpp
+    space.cpp \
+    board.cpp
 
 HEADERS  += \
     button.h \
     game.h \
-    hex.h \
-    hexboard.h
+    space.h \
+    player.h \
+    board.h
 
 FORMS    +=

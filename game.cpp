@@ -1,5 +1,5 @@
 #include "game.h"
-#include "hexboard.h"
+#include "board.h"
 #include "button.h"
 #include <QGraphicsTextItem>
 
@@ -20,8 +20,12 @@ void Game::start(){
     scene->clear();
 
     // test code TODO remove
-    hexBoard = new HexBoard();
-    hexBoard->placeHexes(100,100,3,3);
+    board = new Board();
+    board->placeSpaces(100,100,3,3);
+    std::vector<Space*> spaces = board->getSpaces();
+    for(auto it = spaces.begin(); it != spaces.end(); ++it) {
+        connect(*it,SIGNAL(clicked()),this,SLOT(close()));
+    }
 }
 
 void Game::displayMainMenu(){

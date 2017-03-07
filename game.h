@@ -4,7 +4,7 @@
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include "hexboard.h"
+#include "board.h"
 
 class Game: public QGraphicsView{
     Q_OBJECT
@@ -17,8 +17,8 @@ public:
 
     // public attributes
     QGraphicsScene* scene;
-    HexBoard* hexBoard;
-    QString whosTurn;
+    Board* board;
+    QString whoseTurn;
 public slots:
     void start();
 };
