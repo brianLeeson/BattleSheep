@@ -27,7 +27,8 @@ SOURCES += main.cpp \
     button.cpp \
     game.cpp \
     space.cpp \
-    board.cpp
+    board.cpp \
+    player.cpp
 
 HEADERS  += \
     button.h \

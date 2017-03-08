@@ -4,6 +4,8 @@
 #include <QVector>
 #include <QGraphicsTextItem>
 #include <QBrush>
+#include <iostream>
+
 
 Space::Space(QGraphicsItem *parent){
     // points needed to draw hexagon: (1,0), (2,0), (3,1), (2,2), (1,2), (0,1)
@@ -31,7 +33,8 @@ Space::Space(QGraphicsItem *parent){
 }
 
 void Space::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    emit clicked();
+    std::cout << "button clicked" << std::endl;
+    //emit clicked();
 }
 
 void Space::hoverEnterEvent(QGraphicsSceneHoverEvent *event){
