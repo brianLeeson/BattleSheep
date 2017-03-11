@@ -30,7 +30,7 @@ void Game::start(){
     std::vector<Space*> spaces = board->getSpaces();
     for(auto it = spaces.begin(); it != spaces.end(); ++it) {
         connect(*it,SIGNAL(clicked()),this,SLOT(close()));
-        //redPlayer->occupySpace(&(**it), 16);
+        redPlayer->occupySpace(&(**it), 16);
     }
 }
 
