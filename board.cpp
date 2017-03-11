@@ -7,7 +7,7 @@ Board::Board(){
 
 }
 
-std::vector<Space *> Board::getSpaces(){
+std::vector<Space> Board::getSpaces(){
     return spaces;
 }
 

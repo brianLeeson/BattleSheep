@@ -5,6 +5,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include "board.h"
+#include "player.h"
 
 class Game: public QGraphicsView{
     Q_OBJECT
@@ -14,6 +15,8 @@ public:
 
     // public methods
     void displayMainMenu();
+    void addPlayer(Player*);
+    void setNumPlayers(int num);
 
     // public attributes
     QGraphicsScene* scene;
@@ -21,6 +24,9 @@ public:
     QString whoseTurn;
 public slots:
     void start();
+private:
+    int numPlayers;
+    std::vector<Player*> players = std::vector<Player*>();
 };
 
 #endif // GAME_H

@@ -5,11 +5,14 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "space.h"
 #include <vector>
+#include <QObject>
 
-class Player {
+class Player:public QObject {
+    Q_OBJECT
 	public:
-        Player();
+        Player(Qt::GlobalColor color);
 
         Qt::GlobalColor getColor();
 		void setColor(Qt::GlobalColor color);
@@ -17,16 +20,14 @@ class Player {
 		bool getCanMove();
 		void setCanMove(bool canMove);
 		
-		std::vector<Space*> getOccupiedSpaces();
-		void setOccupiedSpaces(std::vector); //don't use this when a player moves
+        std::vector<Space> getOccupiedSpaces();
 
-		void occupySpace(Space &space);
+        void occupySpace(Space space, int sheep);
 
 	protected:
-		Qt::GlobalColor color = Qt::green;
-		bool canMove = false;
-		std::vector<Space*> occupiedSpaces;
-		
+        Qt::GlobalColor color;
+        bool canMove = true;
+        std::vector<Space> occupiedSpaces;
 };
 
 #endif // PLAYER_H

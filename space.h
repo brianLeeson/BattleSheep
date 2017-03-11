@@ -14,7 +14,7 @@ class Space:public QObject, public QGraphicsPolygonItem {
         Space(QGraphicsItem* parent=NULL);
 
 		Qt::GlobalColor getColor();
-		void setColor(Qt::GlobalColor color);
+        void setColor(Qt::GlobalColor color);
 
 		int getNumSheep();
 		void setNumSheep(int numSheep);
@@ -40,7 +40,7 @@ class Space:public QObject, public QGraphicsPolygonItem {
          void clicked();
 	private:
 		Qt::GlobalColor color = Qt::green;
-		int numSheep = 0;
+        int numSheep = 16;
 		Space* topLeft = NULL;
 		Space* topRight = NULL;
 		Space* botLeft = NULL;

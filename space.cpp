@@ -32,9 +32,18 @@ Space::Space(QGraphicsItem *parent){
     setAcceptHoverEvents(true);
 }
 
+void Space::setColor(Qt::GlobalColor color)
+{
+    this->color = color;
+
+    QBrush brush;
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(color);
+    setBrush(brush);
+}
+
 void Space::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    std::cout << "button clicked" << std::endl;
-    //emit clicked();
+    emit clicked();
 }
 
 void Space::hoverEnterEvent(QGraphicsSceneHoverEvent *event){

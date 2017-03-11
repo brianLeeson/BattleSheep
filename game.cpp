@@ -1,6 +1,7 @@
 #include "game.h"
 #include "board.h"
 #include "button.h"
+#include "player.h"
 #include <QGraphicsTextItem>
 
 Game::Game(QWidget *parent){
@@ -19,12 +20,17 @@ void Game::start(){
     // clear the screen
     scene->clear();
 
+    //initializing player
+    Player *redPlayer = new Player(Qt::red);
+    addPlayer(redPlayer);
+
     // test code TODO remove
     board = new Board();
-    board->placeSpaces(100,100,3,3);
-    std::vector<Space*> spaces = board->getSpaces();
+    board->placeSpaces(100,100,5,5);
+    std::vector<Space> spaces = board->getSpaces();
     for(auto it = spaces.begin(); it != spaces.end(); ++it) {
-        connect(*it,SIGNAL(clicked()),this,SLOT(close()));
+        connect(*(&(*it)),SIGNAL(clicked()),this,SLOT(close()));
+        redPlayer->occupySpace(**it, 16);
     }
 }
 
@@ -53,4 +59,9 @@ void Game::displayMainMenu(){
     quitButton->setPos(qxPos,qyPos);
     connect(quitButton,SIGNAL(clicked()),this,SLOT(close()));
     scene->addItem(quitButton);
+}
+
+void Game::setNumPlayers(int num)
+{
+    this->numPlayers = num;
 }
