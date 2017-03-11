@@ -20,17 +20,15 @@ void Game::start(){
     // clear the screen
     scene->clear();
 
-    //initializing player
-    Player *redPlayer = new Player(Qt::red);
-    addPlayer(redPlayer);
+    Player* redPlayer = new Player(Qt::red);
 
     // test code TODO remove
     board = new Board();
     board->placeSpaces(100,100,5,5);
     std::vector<Space*> spaces = board->getSpaces();
     for(auto it = spaces.begin(); it != spaces.end(); ++it) {
-        connect(*it,SIGNAL(clicked()),this,SLOT(close()));
-        redPlayer->occupySpace(&(**it), 16);
+        //connect(*it,SIGNAL(clicked()),this,SLOT(close()));
+        redPlayer->occupySpace(&(**it), 1);
     }
 }
 

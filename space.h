@@ -39,8 +39,9 @@ class Space:public QObject, public QGraphicsPolygonItem {
     signals:
          void clicked();
 	private:
+        QGraphicsTextItem* text;
 		Qt::GlobalColor color = Qt::green;
-        int numSheep = 16;
+        int numSheep = 0;
 		Space* topLeft = NULL;
 		Space* topRight = NULL;
 		Space* botLeft = NULL;

@@ -12,7 +12,7 @@ std::vector<Space*> Board::getSpaces(){
 }
 
 void Board::placeSpaces(int x, int y, int cols, int rows){
-    int X_SHIFT = 82;
+    int X_SHIFT = 70;
     int Y_SHIFT = 41;
 
     for (size_t i = 0, n = cols; i < n; i++){
