@@ -20,14 +20,14 @@ class Player:public QObject {
 		bool getCanMove();
 		void setCanMove(bool canMove);
 		
-        std::vector<Space> getOccupiedSpaces();
+        std::vector<Space*> getOccupiedSpaces();
 
-        void occupySpace(Space space, int sheep);
+        void occupySpace(Space *space, int sheep);
 
 	protected:
         Qt::GlobalColor color;
         bool canMove = true;
-        std::vector<Space> occupiedSpaces;
+        std::vector<Space*> occupiedSpaces;
 };
 
 #endif // PLAYER_H

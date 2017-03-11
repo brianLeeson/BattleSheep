@@ -15,7 +15,7 @@ public:
 
     // public methods
     void displayMainMenu();
-    void addPlayer(Player*);
+    void addPlayer(Player* player);
     void setNumPlayers(int num);
 
     // public attributes

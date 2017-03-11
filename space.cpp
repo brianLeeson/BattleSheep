@@ -42,6 +42,11 @@ void Space::setColor(Qt::GlobalColor color)
     setBrush(brush);
 }
 
+void Space::setNumSheep(int numSheep)
+{
+    this->numSheep = numSheep;
+}
+
 void Space::mousePressEvent(QGraphicsSceneMouseEvent *event){
     emit clicked();
 }

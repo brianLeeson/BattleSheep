@@ -31,9 +31,9 @@ std::vector<Space*> Player::getOccupiedSpaces()
     return occupiedSpaces;
 }
 
-void Player::occupySpace(Space space, int sheep)
+void Player::occupySpace(Space *space, int sheep)
 {
-    space.setNumSheep(sheep);
-    space.setColor(color);
-    this->occupiedSpaces.push_back(*space);
+    space->setNumSheep(sheep);
+    space->setColor(color);
+    this->occupiedSpaces.push_back(space);
 }
