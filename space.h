@@ -7,6 +7,7 @@
 
 #include <QGraphicsPolygonItem>
 #include <QGraphicsSceneMouseEvent>
+#include <map>
 
 class Space:public QObject, public QGraphicsPolygonItem {
     Q_OBJECT
@@ -19,18 +20,8 @@ class Space:public QObject, public QGraphicsPolygonItem {
 		int getNumSheep();
 		void setNumSheep(int numSheep);
 		
-		Space* getTopLeft();
-        void setTopLeft(Space *space);
-		Space* getTopRight();
-        void setTopRight(Space *space);
-		Space* getBotLeft();
-        void setBotLeft(Space *space);
-		Space* getBotRight();
-        void setBotRight(Space *space);
-		Space* getLeft();
-        void setLeft(Space *space);
-		Space* getRight();
-        void setRight(Space *space);
+        Space* getAdjacent(QString direction);
+        void setAdjacent(QString direction, Space* space);
 
         // (events)
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -42,12 +33,7 @@ class Space:public QObject, public QGraphicsPolygonItem {
         QGraphicsTextItem* text;
 		Qt::GlobalColor color = Qt::green;
         int numSheep = 0;
-		Space* topLeft = NULL;
-		Space* topRight = NULL;
-		Space* botLeft = NULL;
-		Space* botRight = NULL;
-		Space* Left = NULL;
-		Space* Right = NULL;
+        std::map<QString, Space*> adjacentSpaces;
 };
 
 #endif // SPACE_H

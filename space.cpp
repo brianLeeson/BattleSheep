@@ -9,7 +9,6 @@
 
 
 Space::Space(QGraphicsItem *parent) {
-    // points needed to draw hexagon: (1,0), (2.5,0), (3,1), (2.5,2), (1,2), (0,1)
     QVector<QPointF> hexPoints;
     hexPoints << QPointF(0,0) << QPointF(1,0) << QPointF(1.5,.87) << QPointF(1, 1.72)
               << QPointF(0,1.72) << QPointF(-.5,.87);
@@ -22,7 +21,6 @@ Space::Space(QGraphicsItem *parent) {
 
     // create a polygon with the scaled points
     QPolygonF hexagon(hexPoints);
-    //setPolygon(hexagon);
 
     // draw the poly
     QBrush brush;
@@ -57,8 +55,17 @@ void Space::setNumSheep(int numSheep)
     }
 }
 
+Space* Space::getAdjacent(QString direction) {
+    return adjacentSpaces[direction];
+}
+
+void Space::setAdjacent(QString direction, Space* space) {
+    adjacentSpaces[direction] = space;
+}
+
 void Space::mousePressEvent(QGraphicsSceneMouseEvent *event){
     setNumSheep(numSheep+1);
+    getAdjacent("u")->setNumSheep(10);
     emit clicked();
 }
 
