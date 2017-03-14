@@ -65,7 +65,7 @@ void Space::setAdjacent(QString direction, Space* space) {
 
 void Space::mousePressEvent(QGraphicsSceneMouseEvent *event){
     setNumSheep(numSheep+1);
-    getAdjacent("u")->setNumSheep(10);
+    //getAdjacent("u")->setNumSheep(10);
     emit clicked();
 }
 

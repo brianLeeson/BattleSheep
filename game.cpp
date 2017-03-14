@@ -20,7 +20,15 @@ void Game::start(){
     // clear the screen
     scene->clear();
 
-    Player* redPlayer = new Player(Qt::red);
+    Qt::GlobalColor playerColors[4] = { Qt::red, Qt::blue, Qt::yellow, Qt::magenta };
+
+    Player* newPlayer;
+    Qt::GlobalColor playerColor;
+    for (int i = 0; i < numPlayers; i++) {
+        playerColor = playerColors[i];
+        newPlayer = new Player(playerColor);
+        players.push_back(newPlayer);
+    }
 
     // test code TODO remove
     board = new Board();
@@ -28,7 +36,7 @@ void Game::start(){
     std::vector<Space*> spaces = board->getSpaces();
     for(auto it = spaces.begin(); it != spaces.end(); ++it) {
         //connect(*it,SIGNAL(clicked()),this,SLOT(close()));
-        redPlayer->occupySpace(&(**it), 1);
+        players[3]->occupySpace(&(**it), 1);
     }
 }
 
@@ -57,6 +65,8 @@ void Game::displayMainMenu(){
     quitButton->setPos(qxPos,qyPos);
     connect(quitButton,SIGNAL(clicked()),this,SLOT(close()));
     scene->addItem(quitButton);
+
+    setNumPlayers(4);
 }
 
 void Game::addPlayer(Player* player)
