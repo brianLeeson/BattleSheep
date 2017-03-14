@@ -2,12 +2,6 @@
 #include <QApplication>
 #include "game.h"
 
-/*
-Goal of tutorial:
--implement Button class
--make starting Menu
-*/
-
 Game* game;
 
 int main(int argc, char *argv[])
