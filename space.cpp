@@ -1,4 +1,5 @@
 #include "space.h"
+#include "game.h"
 #include <QPointF>
 #include <QPolygonF>
 #include <QVector>
@@ -7,6 +8,7 @@
 #include <QString>
 #include <iostream>
 
+extern Game* game;
 
 Space::Space(QGraphicsItem *parent) {
     QVector<QPointF> hexPoints;
@@ -64,9 +66,15 @@ void Space::setAdjacent(QString direction, Space* space) {
 }
 
 void Space::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    setNumSheep(numSheep+1);
+    QString gameState = game->getState();
+    Player* currentPlayer = game->getPlayers()[game->getWhoseTurn()];
+    if (gameState == "placing sheep" && this->numSheep == 0) {
+        currentPlayer->occupySpace(this, 16);
+        game->incrementTurn();
+    }
+    //setNumSheep(numSheep+1);
     //getAdjacent("u")->setNumSheep(10);
-    emit clicked();
+    //emit clicked();
 }
 
 void Space::hoverEnterEvent(QGraphicsSceneHoverEvent *event){

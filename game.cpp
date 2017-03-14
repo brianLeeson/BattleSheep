@@ -5,6 +5,10 @@
 #include <QGraphicsTextItem>
 
 Game::Game(QWidget *parent){
+    states[0] = (QString) "generating tiles";
+    states[1] = (QString) "placing sheep";
+    states[2] = (QString) "moving sheep";
+
     // set up the screen
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -33,11 +37,14 @@ void Game::start(){
     // test code TODO remove
     board = new Board();
     board->placeSpaces(100,100,5,5);
-    std::vector<Space*> spaces = board->getSpaces();
-    for(auto it = spaces.begin(); it != spaces.end(); ++it) {
+    //std::vector<Space*> spaces = board->getSpaces();
+    //for(auto it = spaces.begin(); it != spaces.end(); ++it) {
         //connect(*it,SIGNAL(clicked()),this,SLOT(close()));
-        players[3]->occupySpace(&(**it), 1);
-    }
+        //players[3]->occupySpace(&(**it), 1);
+    //}
+
+    state = 1;
+
 }
 
 void Game::displayMainMenu(){
@@ -74,7 +81,30 @@ void Game::addPlayer(Player* player)
     players.push_back(player);
 }
 
+std::vector<Player *> Game::getPlayers()
+{
+    return this->players;
+}
+
 void Game::setNumPlayers(int num)
 {
     this->numPlayers = num;
+}
+
+QString Game::getState()
+{
+    return states[state];
+}
+
+int Game::getWhoseTurn()
+{
+    return whoseTurn % numPlayers;
+}
+
+void Game::incrementTurn()
+{
+    whoseTurn++;
+    if (whoseTurn >= numPlayers) {
+        state = 2;
+    }
 }
