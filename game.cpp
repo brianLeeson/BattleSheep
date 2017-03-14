@@ -3,22 +3,31 @@
 #include "button.h"
 #include "player.h"
 #include <QGraphicsTextItem>
+#include <QSpinBox>
+#include <QtWidgets>
+#include <iostream>
 
 Game::Game(QWidget *parent){
     // set up the screen
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setFixedSize(1024,768);
+    setFixedSize(1024,500);
+    setNumPlayers(2);
 
     // set up the scene
     scene = new QGraphicsScene();
-    scene->setSceneRect(0,0,1024,768);
+    scene->setSceneRect(0,0,1024,500);
     setScene(scene);
+
+    //QHBoxLayout *layout = new QHBoxLayout;
+
 }
 
 void Game::start(){
     // clear the screen
     scene->clear();
+
+    //set numPlayer
 
     //initializing player
     Player *redPlayer = new Player(Qt::red);
@@ -34,7 +43,13 @@ void Game::start(){
     }
 }
 
+void Game::setNumFromSpin(){
+    setNumPlayers(playerSpinBox->value());
+}
+
 void Game::displayMainMenu(){
+    setWindowTitle(tr("Battle Sheep"));
+
     // create the title text
     QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Battle Sheep"));
     QFont titleFont("comic sans",50);
@@ -59,6 +74,18 @@ void Game::displayMainMenu(){
     quitButton->setPos(qxPos,qyPos);
     connect(quitButton,SIGNAL(clicked()),this,SLOT(close()));
     scene->addItem(quitButton);
+
+    /* create the spinbox */
+    playerSpinBox = new QSpinBox;
+    playerSpinBox->setRange(2, 4);
+    playerSpinBox->setSingleStep(1);
+    playerSpinBox->setValue(2);
+    playerSpinBox->setFixedHeight(50);
+    playerSpinBox->setFixedWidth(200);
+    playerSpinBox->setAlignment(Qt::AlignHCenter);
+    connect(playerSpinBox, SIGNAL(valueChanged(int)), this, SLOT(setNumFromSpin()));
+    scene->addWidget(playerSpinBox);
+
 }
 
 void Game::addPlayer(Player* player)
@@ -69,4 +96,9 @@ void Game::addPlayer(Player* player)
 void Game::setNumPlayers(int num)
 {
     this->numPlayers = num;
+}
+
+int Game::getNumPlayers()
+{
+    return this->numPlayers;
 }
