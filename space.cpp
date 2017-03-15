@@ -7,6 +7,7 @@
 #include <QBrush>
 #include <QString>
 #include <iostream>
+#include <map>
 
 extern Game* game;
 
@@ -70,6 +71,14 @@ void Space::mousePressEvent(QGraphicsSceneMouseEvent *event){
     Player* currentPlayer = game->getPlayers()[game->getWhoseTurn()];
     if (gameState == "placing sheep" && this->numSheep == 0) {
         currentPlayer->occupySpace(this, 16);
+
+        std::map<QString, Space*>::iterator it;
+
+        // When Round 0 happens, all adjacent Spaces are painted with original color.
+        for(it = adjacentSpaces.begin(); it != adjacentSpaces.end(); it++) {
+            it->second->setColor(currentPlayer->getColor());
+        }
+
         game->incrementTurn();
     }
     //setNumSheep(numSheep+1);

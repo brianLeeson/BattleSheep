@@ -27,6 +27,7 @@ Game::Game(QWidget *parent){
 void Game::start(){
     // clear the screen
     scene->clear();
+    setFixedSize(200*getNumPlayers(),800);
 
     Qt::GlobalColor playerColors[4] = { Qt::red, Qt::blue, Qt::yellow, Qt::magenta };
 
@@ -40,7 +41,8 @@ void Game::start(){
 
     // test code TODO remove
     board = new Board();
-    board->placeSpaces(100,100,5,5);
+    board->placeSpaces(50,10,2*getNumPlayers(),8);
+
     //std::vector<Space*> spaces = board->getSpaces();
     //for(auto it = spaces.begin(); it != spaces.end(); ++it) {
         //connect(*it,SIGNAL(clicked()),this,SLOT(close()));
