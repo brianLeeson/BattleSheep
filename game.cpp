@@ -8,6 +8,10 @@
 #include <iostream>
 
 Game::Game(QWidget *parent){
+    states[0] = (QString) "generating tiles";
+    states[1] = (QString) "placing sheep";
+    states[2] = (QString) "moving sheep";
+
     // set up the screen
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -18,29 +22,33 @@ Game::Game(QWidget *parent){
     scene = new QGraphicsScene();
     scene->setSceneRect(0,0,1024,500);
     setScene(scene);
-
-    //QHBoxLayout *layout = new QHBoxLayout;
-
 }
 
 void Game::start(){
     // clear the screen
     scene->clear();
 
-    //set numPlayer
+    Qt::GlobalColor playerColors[4] = { Qt::red, Qt::blue, Qt::yellow, Qt::magenta };
 
-    //initializing player
-    Player *redPlayer = new Player(Qt::red);
-    addPlayer(redPlayer);
+    Player* newPlayer;
+    Qt::GlobalColor playerColor;
+    for (int i = 0; i < numPlayers; i++) {
+        playerColor = playerColors[i];
+        newPlayer = new Player(playerColor);
+        players.push_back(newPlayer);
+    }
 
     // test code TODO remove
     board = new Board();
     board->placeSpaces(100,100,5,5);
-    std::vector<Space*> spaces = board->getSpaces();
-    for(auto it = spaces.begin(); it != spaces.end(); ++it) {
-        connect(*it,SIGNAL(clicked()),this,SLOT(close()));
-        redPlayer->occupySpace(&(**it), 16);
-    }
+    //std::vector<Space*> spaces = board->getSpaces();
+    //for(auto it = spaces.begin(); it != spaces.end(); ++it) {
+        //connect(*it,SIGNAL(clicked()),this,SLOT(close()));
+        //players[3]->occupySpace(&(**it), 1);
+    //}
+
+    state = 1;
+
 }
 
 void Game::setNumFromSpin(){
@@ -85,12 +93,16 @@ void Game::displayMainMenu(){
     playerSpinBox->setAlignment(Qt::AlignHCenter);
     connect(playerSpinBox, SIGNAL(valueChanged(int)), this, SLOT(setNumFromSpin()));
     scene->addWidget(playerSpinBox);
-
 }
 
 void Game::addPlayer(Player* player)
 {
     players.push_back(player);
+}
+
+std::vector<Player *> Game::getPlayers()
+{
+    return this->players;
 }
 
 void Game::setNumPlayers(int num)
@@ -101,4 +113,23 @@ void Game::setNumPlayers(int num)
 int Game::getNumPlayers()
 {
     return this->numPlayers;
+}
+
+QString Game::getState()
+{
+    return states[state];
+}
+
+int Game::getWhoseTurn()
+{
+    return whoseTurn % numPlayers;
+}
+
+void Game::incrementTurn()
+{
+    whoseTurn++;
+    if (whoseTurn >= numPlayers) {
+        state = 2;
+    }
+
 }

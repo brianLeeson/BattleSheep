@@ -3,6 +3,7 @@
 
 #include <QList>
 #include "space.h"
+#include <vector>
 
 class Board{
 public:
@@ -16,7 +17,7 @@ public:
     void placeSpaces(int x, int y, int cols, int rows);
 
 private:
-    void createSpaceColumn(int x, int y, int numOfRows);
+    std::vector<Space*> createSpaceColumn(int x, int y, int numOfRows);
     std::vector<Space*> spaces;
 };
 

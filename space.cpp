@@ -1,20 +1,22 @@
 #include "space.h"
+#include "game.h"
 #include <QPointF>
 #include <QPolygonF>
 #include <QVector>
 #include <QGraphicsTextItem>
 #include <QBrush>
+#include <QString>
 #include <iostream>
 
+extern Game* game;
 
-Space::Space(QGraphicsItem *parent){
-    // points needed to draw hexagon: (1,0), (2,0), (3,1), (2,2), (1,2), (0,1)
+Space::Space(QGraphicsItem *parent) {
     QVector<QPointF> hexPoints;
-    hexPoints << QPointF(1,0) << QPointF(2,0) << QPointF(3,1) << QPointF(2,2)
-              << QPointF(1,2) << QPointF(0,1);
+    hexPoints << QPointF(0,0) << QPointF(1,0) << QPointF(1.5,.87) << QPointF(1, 1.72)
+              << QPointF(0,1.72) << QPointF(-.5,.87);
 
     // scale the points
-    int SCALE_BY = 40;
+    int SCALE_BY = 45;
     for (size_t i = 0, n = hexPoints.size(); i < n; ++i){
         hexPoints[i] = hexPoints[i] * SCALE_BY;
     }
@@ -28,6 +30,10 @@ Space::Space(QGraphicsItem *parent){
     brush.setColor(color);
     setBrush(brush);
     setPolygon(hexagon);
+
+    //draw the text
+    text = new QGraphicsTextItem("",this);
+    text->setPos(15,30);
 
     setAcceptHoverEvents(true);
 }
@@ -45,10 +51,30 @@ void Space::setColor(Qt::GlobalColor color)
 void Space::setNumSheep(int numSheep)
 {
     this->numSheep = numSheep;
+    this->text->setPlainText(QString::number(numSheep));
+    if (numSheep > 9) {
+        this->text->setPos(12,30);
+    }
+}
+
+Space* Space::getAdjacent(QString direction) {
+    return adjacentSpaces[direction];
+}
+
+void Space::setAdjacent(QString direction, Space* space) {
+    adjacentSpaces[direction] = space;
 }
 
 void Space::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    emit clicked();
+    QString gameState = game->getState();
+    Player* currentPlayer = game->getPlayers()[game->getWhoseTurn()];
+    if (gameState == "placing sheep" && this->numSheep == 0) {
+        currentPlayer->occupySpace(this, 16);
+        game->incrementTurn();
+    }
+    //setNumSheep(numSheep+1);
+    //getAdjacent("u")->setNumSheep(10);
+    //emit clicked();
 }
 
 void Space::hoverEnterEvent(QGraphicsSceneHoverEvent *event){
