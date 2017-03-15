@@ -1,4 +1,5 @@
 BattleSheep.pro.user
+BattleSheeo.pro.user.*
 Makefile
 battlesheep
 board.o
@@ -15,3 +16,4 @@ moc_space.cpp
 moc_space.o
 player.o
 space.o
+
