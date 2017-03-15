@@ -72,9 +72,9 @@ void Space::mousePressEvent(QGraphicsSceneMouseEvent *event){
     if (gameState == "placing sheep" && this->numSheep == 0) {
         currentPlayer->occupySpace(this, 16);
 
-        std::map<QString, Space*>::iterator it;
-
         // When Round 0 happens, all adjacent Spaces are painted with original color.
+        // DELETE THESE LINES FOR FUTURE IMPLEMENTS
+        std::map<QString, Space*>::iterator it;
         for(it = adjacentSpaces.begin(); it != adjacentSpaces.end(); it++) {
             it->second->setColor(currentPlayer->getColor());
         }
