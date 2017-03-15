@@ -15,12 +15,12 @@ Game::Game(QWidget *parent){
     // set up the screen
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setFixedSize(1024,500);
+    setFixedSize(1024,700);
     setNumPlayers(2);
 
     // set up the scene
     scene = new QGraphicsScene();
-    scene->setSceneRect(0,0,1024,500);
+    scene->setSceneRect(0,0,1024,700);
     setScene(scene);
 }
 
@@ -48,7 +48,6 @@ void Game::start(){
     //}
 
     state = 1;
-
 }
 
 void Game::setNumFromSpin(){
@@ -83,7 +82,7 @@ void Game::displayMainMenu(){
     connect(quitButton,SIGNAL(clicked()),this,SLOT(close()));
     scene->addItem(quitButton);
 
-    /* create the spinbox */
+    // create the spinbox
     playerSpinBox = new QSpinBox;
     playerSpinBox->setRange(2, 4);
     playerSpinBox->setSingleStep(1);
