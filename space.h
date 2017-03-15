@@ -23,13 +23,17 @@ class Space:public QObject, public QGraphicsPolygonItem {
         Space* getAdjacent(QString direction);
         void setAdjacent(QString direction, Space* space);
 
+        void highlightTarget(Space* space, QString direction);
+
         // (events)
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
         void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    signals:
-         void clicked();
-	private:
+        std::map<QString, Space *> getAdjacentSpaces();
+
+signals:
+        void clicked();
+private:
         QGraphicsTextItem* text;
 		Qt::GlobalColor color = Qt::green;
         int numSheep = 0;

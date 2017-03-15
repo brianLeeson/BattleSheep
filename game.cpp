@@ -132,5 +132,4 @@ void Game::incrementTurn()
     if (whoseTurn >= numPlayers) {
         state = 2;
     }
-
 }

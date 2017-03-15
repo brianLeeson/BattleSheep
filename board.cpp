@@ -16,15 +16,13 @@ void Board::placeSpaces(int x, int y, int cols, int rows){
     int X_SHIFT = 70;
     int Y_SHIFT = 41;
 
-    std::vector<Space*> curColumn;
-
     for (size_t i = 0, n = cols; i < n; i++){
         if (i % 2 == 0) { // even column
             Y_SHIFT = 0;
         } else { // odd column
             Y_SHIFT = 41;
         }
-        curColumn = createSpaceColumn(x+X_SHIFT*i,y+Y_SHIFT,rows);
+        createSpaceColumn(x+X_SHIFT*i,y+Y_SHIFT,rows);
 
         // connect spaces diagonally
         if (i != 0) {

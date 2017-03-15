@@ -39,6 +39,11 @@ Space::Space(QGraphicsItem *parent) {
     setAcceptHoverEvents(true);
 }
 
+Qt::GlobalColor Space::getColor()
+{
+    return color;
+}
+
 void Space::setColor(Qt::GlobalColor color)
 {
     this->color = color;
@@ -71,19 +76,60 @@ void Space::mousePressEvent(QGraphicsSceneMouseEvent *event){
     Player* currentPlayer = game->getPlayers()[game->getWhoseTurn()];
     if (gameState == "placing sheep" && this->numSheep == 0) {
         currentPlayer->occupySpace(this, 16);
-
         // When Round 0 happens, all adjacent Spaces are painted with original color.
         // DELETE THESE LINES FOR FUTURE IMPLEMENTS
-        std::map<QString, Space*>::iterator it;
-        for(it = adjacentSpaces.begin(); it != adjacentSpaces.end(); it++) {
-            it->second->setColor(currentPlayer->getColor());
+//        std::map<QString, Space*>::iterator it;
+//        for(it = adjacentSpaces.begin(); it != adjacentSpaces.end(); it++) {
+//            it->second->setColor(currentPlayer->getColor());
+//        }
+        game->incrementTurn();
+    } else if ((gameState == "moving sheep") && (this->numSheep > 1) && (currentPlayer->getColor() == this->getColor())) {
+//        QString directions[6] = { "u", "d", "ul", "ur", "dl", "dr" };
+//        Space* cur = this;
+//        Space* next;
+//        for (int i = 0; i < 6; i++) {
+//            next = cur->adjacentSpaces[directions[i]];
+//            while (next->getColor() == Qt::green) {
+//                cur = next;
+//                next = cur->adjacentSpaces[directions[i]];
+//            }
+//            cur->setColor(Qt::gray);
+//        }
+
+        std::vector<QString> legalDirections;
+        for (auto it = adjacentSpaces.begin(); it != adjacentSpaces.end(); it++) {
+            if (it->second->getColor() == Qt::green) {
+                legalDirections.push_back(it->first);
+            }
         }
 
-        game->incrementTurn();
+        Space* nextSpace;
+        QString direction;
+        for (auto it = legalDirections.begin(); it != legalDirections.end(); it++) {
+            nextSpace = this->adjacentSpaces[*it];
+            direction = *it;
+            highlightTarget(nextSpace, direction);
+        }
+
+        //get the source tile
+            //highlight the source tile to represent it is the source
+            //highlight the potential target tiles to represent the player's options
+        //get the target tile
+        //ask how many to move
+        //move them
+        //increment the turn only if we moved them
     }
-    //setNumSheep(numSheep+1);
-    //getAdjacent("u")->setNumSheep(10);
-    //emit clicked();
+}
+
+void Space::highlightTarget(Space* space, QString direction) {
+    //check if next is null
+    Space* next = space->getAdjacentSpaces().find(direction)->second;
+    int count = space->getAdjacentSpaces().count(direction);
+    if ((count == 1) && (next->getColor() == Qt::green)) {
+        highlightTarget(next, direction);
+    } else {
+        space->setColor(Qt::gray);
+    }
 }
 
 void Space::hoverEnterEvent(QGraphicsSceneHoverEvent *event){
@@ -100,4 +146,9 @@ void Space::hoverLeaveEvent(QGraphicsSceneHoverEvent *event){
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(color);
     setBrush(brush);
+}
+
+std::map<QString, Space*> Space::getAdjacentSpaces()
+{
+    return adjacentSpaces;
 }
