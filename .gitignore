@@ -16,3 +16,9 @@ moc_space.cpp
 moc_space.o
 player.o
 space.o
+.qmake.stash
+Makefile.Debug
+Makefile.Release
+debug/
+object_script.battlesheep.Debug
+object_script.battlesheep.Release

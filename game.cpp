@@ -48,7 +48,6 @@ void Game::start(){
     // test code TODO remove
     board = new Board();
     board->placeSpaces(50,10,2*getNumPlayers(),8);
-
     state = 1;
     runRound0();
 }
@@ -80,12 +79,16 @@ void Game::runGame() {
         }
     }
 
-    std::cout << "Now to connect legal starts." << std::endl;
+    if (legalStarts.size() == 0) {
+        std::cout << players[whoseTurn]->getColor() << " cannot move." << std::endl;
+        incrementTurn();
+    } else {
+        std::cout << "Now to connect legal starts." << std::endl;
 
-    disconnectSpaces();
-    for (auto it = legalStarts.begin(); it != legalStarts.end(); it++) {
-        connect(*it,SIGNAL(clicked()),this,SLOT(beginMove()));
-
+        disconnectSpaces();
+        for (auto it = legalStarts.begin(); it != legalStarts.end(); it++) {
+            connect(*it,SIGNAL(clicked()),this,SLOT(beginMove()));
+        }
     }
 }
 
@@ -109,6 +112,7 @@ void Game::beginMove() {
 void Game::endMove() {
     std::cout << "Entering endMove." << std::endl;
 
+    // FIXME: Needs to be rewritten with popup return value.
     int sheep = prevSpace->getNumSheep();
     prevSpace->setNumSheep(1);
     players[whoseTurn]->occupySpace(curSpace, sheep-1);
@@ -125,6 +129,8 @@ void Game::endMove() {
 }
 
 void Game::endGame() {
+    std::cout << "The game is now over." << std::endl;
+
     // needs definition
 }
 
@@ -221,16 +227,14 @@ void Game::incrementTurn()
     } else if (state == 2) {
         if (whoseTurn == 0) {
             round++;
-            if (round == 15) {
-                endGame();
-            }
         }
-
-        runGame();
+        if (round < 15) {
+            runGame();
+        } else {
+            endGame();
+        }
     }
 }
-
-
 
 // Getter and Setter Functions
 
