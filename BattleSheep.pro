@@ -38,3 +38,6 @@ HEADERS  += \
     board.h
 
 FORMS    +=
+
+RESOURCES += \
+    resources.qrc

@@ -5,6 +5,8 @@
 #include <QGraphicsTextItem>
 #include <QSpinBox>
 #include <QtWidgets>
+#include <QPixmap>
+#include <QGraphicsPixmapItem>
 #include <iostream>
 
 Game::Game(QWidget *parent){
@@ -31,12 +33,15 @@ void Game::start(){
     setFixedSize(200*getNumPlayers(),800);
 
     Qt::GlobalColor playerColors[4] = { Qt::red, Qt::blue, Qt::black, Qt::white };
+    QString playerImages[4] = { ":/assets/red.jpg", ":/assets/blue.jpg", ":/assets/black.jpg", ":/assets/white.jpg" };
 
     Player* newPlayer;
     Qt::GlobalColor playerColor;
+    QString playerImage;
     for (int i = 0; i < numPlayers; i++) {
         playerColor = playerColors[i];
-        newPlayer = new Player(playerColor);
+        playerImage = playerImages[i];
+        newPlayer = new Player(playerColor, playerImage);
         players.push_back(newPlayer);
     }
 
@@ -112,7 +117,7 @@ void Game::endMove() {
     for (auto it = spaces.begin(); it != spaces.end(); it++) {
         Space* space = *it;
         if (space->getColor() == Qt::gray) {
-            space->setColor(Qt::green);
+            space->setColor(Qt::green, "");
         }
     }
 
@@ -179,7 +184,7 @@ Space* Game::highlightTarget(Space* space, QString direction) {
     if ((count == 1) && (next->getColor() == Qt::green)) {
         return highlightTarget(next, direction);
     } else {
-        space->setColor(Qt::gray);
+        space->setColor(Qt::gray, "");
         return space;
     }
 }

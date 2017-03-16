@@ -12,7 +12,7 @@
 class Player:public QObject {
     Q_OBJECT
 	public:
-        Player(Qt::GlobalColor color);
+        Player(Qt::GlobalColor color, QString imageRef);
 
         Qt::GlobalColor getColor();
 		void setColor(Qt::GlobalColor color);
@@ -26,6 +26,7 @@ class Player:public QObject {
 
 	protected:
         Qt::GlobalColor color;
+        QString imageRef;
         bool canMove = true;
         std::vector<Space*> occupiedSpaces;
 };

@@ -7,8 +7,9 @@
 #include <vector>
 
 
-Player::Player(Qt::GlobalColor color) {
+Player::Player(Qt::GlobalColor color, QString imageRef) {
     this->color = color;
+    this->imageRef = imageRef;
 }
 
 Qt::GlobalColor Player::getColor()
@@ -34,6 +35,6 @@ std::vector<Space*> Player::getOccupiedSpaces()
 void Player::occupySpace(Space *space, int sheep)
 {
     space->setNumSheep(sheep);
-    space->setColor(color);
+    space->setColor(color, imageRef);
     this->occupiedSpaces.push_back(space);
 }

@@ -11,6 +11,7 @@
 
 extern Game* game;
 
+
 Space::Space(QGraphicsItem *parent) {
     QVector<QPointF> hexPoints;
     hexPoints << QPointF(0,0) << QPointF(1,0) << QPointF(1.5,.87) << QPointF(1, 1.72)
@@ -44,9 +45,13 @@ Qt::GlobalColor Space::getColor()
     return color;
 }
 
-void Space::setColor(Qt::GlobalColor color)
+void Space::setColor(Qt::GlobalColor color, QString imageRef)
 {
     this->color = color;
+
+    //QPixmap image(imageRef);
+    QGraphicsPixmapItem *pm = game->scene->addPixmap(QPixmap(imageRef).scaledToWidth(45));
+    pm->setPos(xpos, ypos+20);
 
     QBrush brush;
     brush.setStyle(Qt::SolidPattern);
@@ -132,7 +137,7 @@ void Space::highlightTarget(Space* space, QString direction) {
     if ((count == 1) && (next->getColor() == Qt::green)) {
         highlightTarget(next, direction);
     } else {
-        space->setColor(Qt::gray);
+        space->setColor(Qt::gray, "");
     }
 }
 
@@ -155,4 +160,24 @@ void Space::hoverLeaveEvent(QGraphicsSceneHoverEvent *event){
 std::map<QString, Space*> Space::getAdjacentSpaces()
 {
     return adjacentSpaces;
+}
+
+int Space::getYpos() const
+{
+    return ypos;
+}
+
+void Space::setYpos(int value)
+{
+    ypos = value;
+}
+
+int Space::getXpos() const
+{
+    return xpos;
+}
+
+void Space::setXpos(int value)
+{
+    xpos = value;
 }

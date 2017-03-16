@@ -57,6 +57,8 @@ std::vector<Space*> Board::createSpaceColumn(int x, int y, int numOfRows){
     for (size_t i = 0, n = numOfRows; i < n; i++){
         space = new Space();
         space->setPos(x,y+82*i);
+        space->setYpos(y+82*i);
+        space->setXpos(x);
         column.push_back(space);
         spaces.push_back(space);
         game->scene->addItem(space);
