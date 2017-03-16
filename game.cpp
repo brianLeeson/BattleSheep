@@ -11,6 +11,7 @@ Game::Game(QWidget *parent){
     states[0] = (QString) "generating tiles";
     states[1] = (QString) "placing sheep";
     states[2] = (QString) "moving sheep";
+    states[3] = (QString) "ending game";
 
     // set up the screen
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -29,7 +30,7 @@ void Game::start(){
     scene->clear();
     setFixedSize(200*getNumPlayers(),800);
 
-    Qt::GlobalColor playerColors[4] = { Qt::red, Qt::blue, Qt::yellow, Qt::magenta };
+    Qt::GlobalColor playerColors[4] = { Qt::red, Qt::blue, Qt::black, Qt::white };
 
     Player* newPlayer;
     Qt::GlobalColor playerColor;
@@ -43,17 +44,83 @@ void Game::start(){
     board = new Board();
     board->placeSpaces(50,10,2*getNumPlayers(),8);
 
-    //std::vector<Space*> spaces = board->getSpaces();
-    //for(auto it = spaces.begin(); it != spaces.end(); ++it) {
-        //connect(*it,SIGNAL(clicked()),this,SLOT(close()));
-        //players[3]->occupySpace(&(**it), 1);
-    //}
-
     state = 1;
+    runRound0();
 }
 
-void Game::setNumFromSpin(){
-    setNumPlayers(playerSpinBox->value());
+void Game::runRound0() {
+    disconnectSpaces();
+
+    std::vector<Space*> spaces = board->getSpaces();
+    for(auto it = spaces.begin(); it != spaces.end(); ++it) {
+        if ((*it)->getColor() == Qt::green) {
+            connect(*it,SIGNAL(clicked()),this,SLOT(occupySpace()));
+        }
+    }
+}
+
+void Game::runGame() {
+    std::cout << "It is Round " << round << "." << std::endl;
+    std::cout << "It is " << players[whoseTurn]->getColor() << "'s turn." << std::endl;
+
+    Player* curPlayer = players[whoseTurn];
+    std::vector<Space*> legalStarts;
+    std::vector<Space*> occupiedSpaces = curPlayer->getOccupiedSpaces();
+
+    for (auto it = occupiedSpaces.begin(); it != occupiedSpaces.end(); it++) {
+        Space* space = *it;
+        std::vector<QString> legalDirections = getLegalDirections(space);
+        if ((space->getNumSheep() > 1) && (!legalDirections.empty())) {
+            legalStarts.push_back(space);
+        }
+    }
+
+    std::cout << "Now to connect legal starts." << std::endl;
+
+    disconnectSpaces();
+    for (auto it = legalStarts.begin(); it != legalStarts.end(); it++) {
+        connect(*it,SIGNAL(clicked()),this,SLOT(beginMove()));
+
+    }
+}
+
+void Game::beginMove() {
+    std::cout << "Entering beginMove." << std::endl;
+
+    disconnectSpaces();
+
+    prevSpace = curSpace;
+    std::vector<QString> legalDirections = getLegalDirections(curSpace);
+    Space* nextSpace;
+    QString direction;
+    for (auto it = legalDirections.begin(); it != legalDirections.end(); it++) {
+        nextSpace = curSpace->getAdjacentSpaces()[*it];
+        direction = *it;
+        nextSpace = highlightTarget(nextSpace, direction);
+        connect(nextSpace,SIGNAL(clicked()),this,SLOT(endMove()));
+    }
+}
+
+void Game::endMove() {
+    std::cout << "Entering endMove." << std::endl;
+
+    int sheep = prevSpace->getNumSheep();
+    prevSpace->setNumSheep(1);
+    players[whoseTurn]->occupySpace(curSpace, sheep-1);
+
+    std::vector<Space*> spaces = board->getSpaces();
+    for (auto it = spaces.begin(); it != spaces.end(); it++) {
+        Space* space = *it;
+        if (space->getColor() == Qt::gray) {
+            space->setColor(Qt::green);
+        }
+    }
+
+    incrementTurn();
+}
+
+void Game::endGame() {
+    // needs definition
 }
 
 void Game::displayMainMenu(){
@@ -96,6 +163,72 @@ void Game::displayMainMenu(){
     scene->addWidget(playerSpinBox);
 }
 
+
+
+// Helper Functions
+
+void Game::occupySpace() {
+    players[whoseTurn]->occupySpace(curSpace, 16);
+    incrementTurn();
+}
+
+Space* Game::highlightTarget(Space* space, QString direction) {
+    //check if next is null
+    Space* next = space->getAdjacentSpaces().find(direction)->second;
+    int count = space->getAdjacentSpaces().count(direction);
+    if ((count == 1) && (next->getColor() == Qt::green)) {
+        return highlightTarget(next, direction);
+    } else {
+        space->setColor(Qt::gray);
+        return space;
+    }
+}
+
+std::vector<QString> Game::getLegalDirections(Space* origin) {
+    std::vector<QString> legalDirections;
+    std::map<QString, Space*> adjacentSpaces = origin->getAdjacentSpaces();
+    for (auto it = adjacentSpaces.begin(); it != adjacentSpaces.end(); it++) {
+        if (it->second->getColor() == Qt::green) {
+            legalDirections.push_back(it->first);
+        }
+    }
+
+    return legalDirections;
+}
+
+void Game::disconnectSpaces() {
+    std::vector<Space*> spaces = board->getSpaces();
+    for(auto it = spaces.begin(); it != spaces.end(); ++it) {
+        disconnect(*it, 0, 0, 0);
+    }
+}
+
+void Game::incrementTurn()
+{
+    whoseTurn = (whoseTurn + 1) % numPlayers;
+    if (state == 1) {
+        if (whoseTurn == 0) {
+            state++;
+            runGame();
+        } else {
+            runRound0();
+        }
+    } else if (state == 2) {
+        if (whoseTurn == 0) {
+            round++;
+            if (round == 15) {
+                endGame();
+            }
+        }
+
+        runGame();
+    }
+}
+
+
+
+// Getter and Setter Functions
+
 void Game::addPlayer(Player* player)
 {
     players.push_back(player);
@@ -104,6 +237,10 @@ void Game::addPlayer(Player* player)
 std::vector<Player *> Game::getPlayers()
 {
     return this->players;
+}
+
+void Game::setNumFromSpin(){
+    setNumPlayers(playerSpinBox->value());
 }
 
 void Game::setNumPlayers(int num)
@@ -121,15 +258,19 @@ QString Game::getState()
     return states[state];
 }
 
+Space *Game::getCurSpace()
+{
+    return curSpace;
+}
+
+void Game::setCurSpace(Space *value)
+{
+    curSpace = value;
+}
+
 int Game::getWhoseTurn()
 {
     return whoseTurn % numPlayers;
 }
 
-void Game::incrementTurn()
-{
-    whoseTurn++;
-    if (whoseTurn >= numPlayers) {
-        state = 2;
-    }
-}
+

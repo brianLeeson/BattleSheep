@@ -29,7 +29,7 @@ class Space:public QObject, public QGraphicsPolygonItem {
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
         void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-        std::map<QString, Space *> getAdjacentSpaces();
+        std::map<QString, Space*> getAdjacentSpaces();
 
 signals:
         void clicked();

@@ -31,19 +31,38 @@ public:
     void setNumPlayers(int num);
     int getNumPlayers();
 
+    Space* getCurSpace();
+    void setCurSpace(Space *value);
+
+    void runGame();
+    void runRound0();
+    void endGame();
+
+    void disconnectSpaces();
+    std::vector<QString> getLegalDirections(Space *origin);
+    Space* highlightTarget(Space *space, QString direction);
+
     // public attributes
     QGraphicsScene* scene;
     Board* board;
+
 public slots:
     void start();
     void setNumFromSpin();
+    void occupySpace();
+    void beginMove();
+    void endMove();
+
 private:
     std::map<int, QString> states;
     int state = 0;
     int whoseTurn = 0;
+    int round = 1;
     int numPlayers;
     QSpinBox *playerSpinBox;
     std::vector<Player*> players = std::vector<Player*>();
+    Space* curSpace;
+    Space* prevSpace;
 };
 
 #endif // GAME_H
