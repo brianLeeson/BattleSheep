@@ -37,6 +37,8 @@ Game::Game(QWidget *parent){
 }
 
 void Game::start(){
+    setBackgroundBrush(QBrush(Qt::white, Qt::SolidPattern));
+
     // clear the screen
     scene->clear();
     setFixedSize(1024,1000);
@@ -238,7 +240,7 @@ void Game::BFS(Space* start, int* sum) {
 }
 
 void Game::displayMainMenu(){
-    setBackgroundBrush(QBrush(Qt::darkGreen, Qt::SolidPattern));
+    setBackgroundBrush(QBrush(Qt::green, Qt::SolidPattern));
     setWindowTitle(tr("Battle Sheep"));
 
     // create the title text
@@ -272,6 +274,7 @@ void Game::displayMainMenu(){
     playerLabel->setFixedWidth(200);
     playerLabel->setAlignment(Qt::AlignHCenter);
     playerLabel->setFrameStyle(QFrame::Panel | QFrame::Plain);
+    //playerLabel->set
 
     // create the spinbox
     playerSpinBox = new QSpinBox;
