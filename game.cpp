@@ -66,19 +66,19 @@ void Game::start(){
 
     //current player label
     turnLabel = new QLabel(QString("Turn: Red"));
-    turnLabel->setFixedHeight(10);
+    turnLabel->setFixedHeight(20);
     turnLabel->setFixedWidth(200);
 
     //winner label
     winnerLabel = new QLabel(QString("Winner: no one"));
-    winnerLabel->setFixedHeight(10);
+    winnerLabel->setFixedHeight(20);
     winnerLabel->setFixedWidth(200);
 
     QHBoxLayout *layout = new QHBoxLayout;
     QGroupBox *displayGroup = new QGroupBox(tr(""));
     QHBoxLayout *displayLayout = new QHBoxLayout;
     displayLayout->addWidget(turnLabel);
-    displayLayout->addWidget(winnerLabel);
+    //displayLayout->addWidget(winnerLabel);
     displayGroup->setLayout(displayLayout);
     layout->addWidget(displayGroup);
     layout->setAlignment(Qt::AlignTop);
@@ -227,7 +227,7 @@ void Game::endGame() {
         winnerColor = colors[curTieWinner];
     } 
 
-    winnerLabel->setText(winText + winnerColor);
+    turnLabel->setText(winText + winnerColor);
 }
 
 void Game::BFS(Space* start, int* sum) {
