@@ -2,7 +2,6 @@
 #include "board.h"
 #include "button.h"
 #include "player.h"
-//#include "spinbox.h"
 #include <QGraphicsTextItem>
 #include <QSpinBox>
 #include <QtWidgets>
@@ -149,7 +148,7 @@ void Game::endMove() {
     std::vector<Space*> spaces = board->getSpaces();
     for (auto it = spaces.begin(); it != spaces.end(); it++) {
         Space* space = *it;
-        if (space->getColor() == Qt::gray) {
+        if (space->getColor() == Qt::yellow) {
             space->setColor(Qt::green, "");
         }
     }
@@ -236,6 +235,7 @@ void Game::BFS(Space* start, int* sum) {
 }
 
 void Game::displayMainMenu(){
+    setBackgroundBrush(QBrush(Qt::darkGreen, Qt::SolidPattern));
     setWindowTitle(tr("Battle Sheep"));
 
     // create the title text
@@ -302,7 +302,7 @@ Space* Game::highlightTarget(Space* space, QString direction) {
     if ((count == 1) && (next->getColor() == Qt::green)) {
         return highlightTarget(next, direction);
     } else {
-        space->setColor(Qt::gray, "");
+        space->setColor(Qt::yellow, "");
         return space;
     }
 }
@@ -357,7 +357,7 @@ void Game::closePopUp() {
     std::vector<Space*> spaces = board->getSpaces();
     for (auto it = spaces.begin(); it != spaces.end(); it++) {
         Space* space = *it;
-        if (space->getColor() == Qt::gray) {
+        if (space->getColor() == Qt::yellow) {
             space->setColor(Qt::green, "");
         }
     }

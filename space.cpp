@@ -36,7 +36,7 @@ Space::Space(QGraphicsItem *parent) {
     //draw the text
     text = new QGraphicsTextItem("",this);
     text->setPos(15,55);
-    text->setDefaultTextColor(Qt::green);
+    text->setDefaultTextColor(Qt::black);
 
     setAcceptHoverEvents(true);
 }
@@ -53,7 +53,7 @@ void Space::setColor(Qt::GlobalColor color, QString imageRef)
     QGraphicsPixmapItem *pm = game->scene->addPixmap(QPixmap(imageRef).scaledToWidth(45));
     pm->setPos(xpos, ypos+10);
 
-    //text->setDefaultTextColor(Qt::white);
+    if (color == Qt::black) { text->setDefaultTextColor(Qt::white); }
 
     if (imageRef == "") {
         QBrush brush;
