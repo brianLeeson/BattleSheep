@@ -115,10 +115,7 @@ void Game::beginMove() {
 void Game::endMove() {
     std::cout << "Entering endMove." << std::endl;
 
-    // FIXME: Needs to be rewritten with popup return value.
-    int sheep = prevSpace->getNumSheep();
-    prevSpace->setNumSheep(1);
-    players[whoseTurn]->occupySpace(curSpace, sheep-1);
+    migrate();
 
     std::vector<Space*> spaces = board->getSpaces();
     for (auto it = spaces.begin(); it != spaces.end(); it++) {
@@ -210,6 +207,19 @@ Space* Game::highlightTarget(Space* space, QString direction) {
         space->setColor(Qt::gray, "");
         return space;
     }
+}
+
+void Game::migrate(){
+    //does nothing
+    this->sheepToStay = 1;
+    this->sheepToLeave = 1;
+
+    // FIXME: Needs to be rewritten with popup return value.
+    int sheep = prevSpace->getNumSheep();
+    prevSpace->setNumSheep(1);
+    players[whoseTurn]->occupySpace(curSpace, sheep-1);
+
+
 }
 
 std::vector<QString> Game::getLegalDirections(Space* origin) {

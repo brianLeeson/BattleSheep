@@ -42,6 +42,8 @@ public:
     std::vector<QString> getLegalDirections(Space *origin);
     Space* highlightTarget(Space *space, QString direction);
 
+    void migrate();
+
     // public attributes
     QGraphicsScene* scene;
     Board* board;
@@ -63,6 +65,8 @@ private:
     std::vector<Player*> players = std::vector<Player*>();
     Space* curSpace;
     Space* prevSpace;
+    int sheepToLeave;
+    int sheepToStay;
 };
 
 #endif // GAME_H
