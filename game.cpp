@@ -10,6 +10,7 @@
 #include <QGraphicsPixmapItem>
 #include <iostream>
 #include <QLabel>
+#include <QPushButton>
 
 Game::Game(QWidget *parent){
     states[0] = (QString) "generating tiles";
@@ -239,15 +240,18 @@ void Game::movePrompt(){
     migrateSpinbox = new QSpinBox;
     migrateSpinbox->setRange(1, prevSpace->getNumSheep()-1);
     migrateSpinbox->setSingleStep(1);
-    migrateSpinbox->setValue(1);
+    migrateSpinbox->setValue(prevSpace->getNumSheep()-1);
     migrateSpinbox->setFixedHeight(50);
     migrateSpinbox->setFixedWidth(200);
     migrateSpinbox->setAlignment(Qt::AlignHCenter);
-
     connect(migrateSpinbox, SIGNAL(valueChanged(int)), this, SLOT(setMigrateNums()));
+
+    migrateClose = new QPushButton("Close Window");
+    connect(migrateClose, SIGNAL(clicked()), popup, SLOT(close()));
 
     migrateLayout->addWidget(migrateLabel);
     migrateLayout->addWidget(migrateSpinbox);
+    migrateLayout->addWidget(migrateClose);
 
     //set layout
     migrateGroup->setLayout(migrateLayout);
