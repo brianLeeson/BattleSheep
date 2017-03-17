@@ -138,7 +138,9 @@ void Game::endGame() {
     std::map<Qt::GlobalColor, int> scores;
     std::vector<Space*> spaces = board->getSpaces();
     for (auto it = spaces.begin(); it != spaces.end(); it++) {
-         scores[(*it)->getColor()] += 1;
+         if ((*it)->getColor() != Qt::green) {
+             scores[(*it)->getColor()] += 1;
+         }
     }
 
     int max = 0;
@@ -146,12 +148,13 @@ void Game::endGame() {
     for (auto it = scores.begin(); it != scores.end(); it++) {
         if ((*it).second > max) { 
             max = (*it).second;
+            std::cout << "changing max to " << max << " , " << (*it).first << " is new winner" << std::endl;
             winner = (*it).first;
         }
     }
 
     int curTieBreakerMax = 0;
-    int bfsResult;
+    int bfsResult = 0;
     int curTieWinner;
     Player* curPlayer;
     std::vector<Space*> occSpaces;
@@ -161,17 +164,32 @@ void Game::endGame() {
         for (auto it = occSpaces.begin(); it != occSpaces.end(); it++) {
 	    BFS((*it), &bfsResult);            
             if (bfsResult > curTieBreakerMax) {
+                std::cout << "bfsResult was " << bfsResult << std::endl;
                 curTieBreakerMax = bfsResult;
                 curTieWinner = i;
             }
+            bfsResult = 0;
         }
     }
 
 
     char* colors[4] = { "Red", "Blue", "Black", "White" };
-        
+    char* winnerColor;
+    if (winner == Qt::red) {
+        winnerColor = "Red";
+    }
+    if (winner == Qt::blue) {
+        winnerColor = "Blue";
+    }
+    if (winner == Qt::black) {
+        winnerColor = "Black";
+    }
+    if (winner == Qt::white) {
+        winnerColor = "White";
+    }
+
     std::cout << winnerColor  << " player wins!" << std::endl;
-    std::cout << "but " << curTieWinner << " if there was a tie " << std::endl;
+    std::cout << "but " << colors[curTieWinner] << " if there was a tie " << std::endl;
 
     
     
