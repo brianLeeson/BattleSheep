@@ -28,14 +28,16 @@ SOURCES += main.cpp \
     game.cpp \
     space.cpp \
     board.cpp \
-    player.cpp
+    player.cpp \
+    spinbox.cpp
 
 HEADERS  += \
     button.h \
     game.h \
     space.h \
     player.h \
-    board.h
+    board.h \
+    spinbox.h
 
 FORMS    +=
 
