@@ -110,6 +110,8 @@ void Game::beginMove() {
         nextSpace = highlightTarget(nextSpace, direction);
         connect(nextSpace,SIGNAL(clicked()),this,SLOT(endMove()));
     }
+    //prompt user for values for migration
+    movePrompt();
 }
 
 void Game::endMove() {
@@ -127,6 +129,8 @@ void Game::endMove() {
 
     incrementTurn();
 }
+
+
 
 void Game::endGame() {
     std::cout << "The game is now over." << std::endl;
@@ -170,7 +174,6 @@ void Game::displayMainMenu(){
 
 
     // create the spinbox
-    //Spinbox* playerSpinBox = new Spinbox(2,4); FAILED attempt.
     playerSpinBox = new QSpinBox;
     playerSpinBox->setRange(2, 4);
     playerSpinBox->setSingleStep(1);
@@ -209,17 +212,51 @@ Space* Game::highlightTarget(Space* space, QString direction) {
     }
 }
 
-void Game::migrate(){
-    //does nothing
+void Game::movePrompt(){
+    //set default values in case prompt ignored.
     this->sheepToStay = 1;
-    this->sheepToLeave = 1;
+    this->sheepToLeave = prevSpace->getNumSheep() - 1;
 
-    // FIXME: Needs to be rewritten with popup return value.
-    int sheep = prevSpace->getNumSheep();
-    prevSpace->setNumSheep(1);
-    players[whoseTurn]->occupySpace(curSpace, sheep-1);
+    //prompt user in popup
+    popup = new QWidget();
 
+    // layout and groups
+    QHBoxLayout *layout = new QHBoxLayout;
+    QGroupBox *migrateGroup = new QGroupBox(tr("Migrate"));
+    QVBoxLayout *migrateLayout = new QVBoxLayout;
 
+    // create label
+    QLabel* migrateLabel = new QLabel(QString("Sheep to Migrate:"));
+    migrateLabel->setFixedHeight(50);
+    migrateLabel->setFixedWidth(200);
+    migrateLabel->setAlignment(Qt::AlignHCenter);
+
+    // create spinbox
+    QSpinBox *migrateSpinbox = new QSpinBox;
+    migrateSpinbox->setRange(1, prevSpace->getNumSheep()-1);
+    migrateSpinbox->setSingleStep(1);
+    migrateSpinbox->setValue(2);
+    migrateSpinbox->setFixedHeight(50);
+    migrateSpinbox->setFixedWidth(200);
+    migrateSpinbox->setAlignment(Qt::AlignHCenter);
+    connect(migrateSpinbox, SIGNAL(valueChanged(int)), this->parentWidget(), SLOT(setMigrateNums()));
+    migrateLayout->addWidget(migrateLabel);
+    migrateLayout->addWidget(migrateSpinbox);
+
+    //set layout
+    migrateGroup->setLayout(migrateLayout);
+    layout->addWidget(migrateGroup);
+    popup->setLayout(layout);
+
+    popup->show();
+
+}
+
+void Game::migrate(){
+    //keep and move sheep
+    popup->close();
+    prevSpace->setNumSheep(sheepToStay);
+    players[whoseTurn]->occupySpace(curSpace, sheepToLeave);
 }
 
 std::vector<QString> Game::getLegalDirections(Space* origin) {
@@ -277,6 +314,13 @@ std::vector<Player *> Game::getPlayers()
 
 void Game::setNumFromSpin(){
     setNumPlayers(playerSpinBox->value());
+}
+
+void Game::setMigrateNums(){
+    std::cout << "in setMigrateNums" << endl;
+    int migrating = migrateSpinbox->value();
+    sheepToLeave = migrating;
+    sheepToStay = prevSpace->getNumSheep() - migrating;
 }
 
 void Game::setNumPlayers(int num)

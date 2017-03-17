@@ -42,6 +42,7 @@ public:
     std::vector<QString> getLegalDirections(Space *origin);
     Space* highlightTarget(Space *space, QString direction);
 
+    void movePrompt();
     void migrate();
 
     // public attributes
@@ -54,6 +55,7 @@ public slots:
     void occupySpace();
     void beginMove();
     void endMove();
+    void setMigrateNums();
 
 private:
     std::map<int, QString> states;
@@ -62,11 +64,13 @@ private:
     int round = 1;
     int numPlayers;
     QSpinBox *playerSpinBox;
+    QSpinBox *migrateSpinbox;
     std::vector<Player*> players = std::vector<Player*>();
     Space* curSpace;
     Space* prevSpace;
     int sheepToLeave;
     int sheepToStay;
+    QWidget *popup;
 };
 
 #endif // GAME_H
