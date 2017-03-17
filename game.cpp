@@ -134,8 +134,6 @@ void Game::endMove() {
 void Game::endGame() {
     std::cout << "The game is now over." << std::endl;
     disconnectSpaces();
-
-    // needs definition
 }
 
 void Game::displayMainMenu(){
@@ -172,7 +170,6 @@ void Game::displayMainMenu(){
     playerLabel->setFixedWidth(200);
     playerLabel->setAlignment(Qt::AlignHCenter);
 
-
     // create the spinbox
     playerSpinBox = new QSpinBox;
     playerSpinBox->setRange(2, 4);
@@ -190,7 +187,6 @@ void Game::displayMainMenu(){
     layout->setAlignment(Qt::AlignHCenter);
     setLayout(layout);
     this->layout()->setAlignment(Qt::AlignBottom);
-
 }
 
 // Helper Functions
@@ -216,11 +212,6 @@ void Game::movePrompt(){
     //set default values in case prompt ignored.
     this->sheepToStay = 1;
     this->sheepToLeave = prevSpace->getNumSheep() - 1;
-
-    std::cout << "LOOK HERE\n" << endl;
-    std::cout << this->parent() << endl;
-    std::cout << "LOOK HERE\n" << endl;
-
 
     //prompt user in popup
     popup = new QWidget();
@@ -259,7 +250,6 @@ void Game::movePrompt(){
 
     popup->setLayout(layout);
     popup->show();
-
 }
 
 void Game::migrate(){
@@ -288,8 +278,7 @@ void Game::disconnectSpaces() {
     }
 }
 
-void Game::incrementTurn()
-{
+void Game::incrementTurn(){
     whoseTurn = (whoseTurn + 1) % numPlayers;
     if (state == 1) {
         if (whoseTurn == 0) {
@@ -327,7 +316,6 @@ void Game::setNumFromSpin(){
 }
 
 void Game::setMigrateNums(){
-    //std::cout << "in setMigrateNums" << endl;
     int migrating = migrateSpinbox->value();
     sheepToLeave = migrating;
     sheepToStay = prevSpace->getNumSheep() - migrating;
