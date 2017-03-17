@@ -132,6 +132,35 @@ void Game::endGame() {
     std::cout << "The game is now over." << std::endl;
     disconnectSpaces();
 
+    int curSum = 0;
+    std::vector<int> sums;
+    Player* curPlayer;
+    std::vector<Space*> occSpaces;
+    for (int i = 0; i < numPlayers; i++) {
+        curPlayer = players[i];
+        occSpaces = curPlayer->getOccupiedSpaces();
+        for (auto it = occSpaces.begin(); it != occSpaces.end(); it++) {
+            curSum += (*it)->getNumSheep();
+        }
+        sums.push_back(curSum);
+        curSum = 0;
+    }
+
+
+    int winner;
+    int max = 0;
+    for (auto it = sums.begin(); it != sums.end(); it++) {
+        if ((*it) > max) { 
+            max = (*it);
+        }
+        
+    }
+    //for every tile in player's spaces
+    //get the tile's number and add it to accumulator
+    //the player with the greatest sum wins
+    //if there is a tie, then use BFS to calculate winner
+
+
     // needs definition
 }
 
@@ -204,7 +233,6 @@ std::vector<QString> Game::getLegalDirections(Space* origin) {
             legalDirections.push_back(it->first);
         }
     }
-
     return legalDirections;
 }
 
