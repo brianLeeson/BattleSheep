@@ -36,7 +36,7 @@ void Game::start(){
     setFixedSize(200*getNumPlayers(),800);
 
     Qt::GlobalColor playerColors[4] = { Qt::red, Qt::blue, Qt::black, Qt::white };
-    QString playerImages[4] = { ":/assets/red.jpg", ":/assets/blue.jpg", ":/assets/black.jpg", ":/assets/white.jpg" };
+    QString playerImages[4] = { ":/assets/red.png", ":/assets/blue.png", ":/assets/black.png", ":/assets/white.png" };
 
     Player* newPlayer;
     Qt::GlobalColor playerColor;
@@ -134,6 +134,7 @@ void Game::endMove() {
 
 void Game::endGame() {
     std::cout << "The game is now over." << std::endl;
+    disconnectSpaces();
 
     // needs definition
 }
@@ -292,7 +293,7 @@ void Game::incrementTurn()
         if (whoseTurn == 0) {
             round++;
         }
-        if (round < 15) {
+        if (round < 16) {
             runGame();
         } else {
             endGame();
