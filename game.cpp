@@ -10,6 +10,7 @@
 #include <QGraphicsPixmapItem>
 #include <iostream>
 #include <QLabel>
+#include <QPushButton>
 
 Game::Game(QWidget *parent){
     states[0] = (QString) "generating tiles";
@@ -130,8 +131,6 @@ void Game::endMove() {
     incrementTurn();
 }
 
-
-
 void Game::endGame() {
     std::cout << "The game is now over." << std::endl;
     disconnectSpaces();
@@ -229,7 +228,6 @@ void Game::displayMainMenu(){
     playerLabel->setFixedWidth(200);
     playerLabel->setAlignment(Qt::AlignHCenter);
 
-
     // create the spinbox
     playerSpinBox = new QSpinBox;
     playerSpinBox->setRange(2, 4);
@@ -247,7 +245,6 @@ void Game::displayMainMenu(){
     layout->setAlignment(Qt::AlignHCenter);
     setLayout(layout);
     this->layout()->setAlignment(Qt::AlignBottom);
-
 }
 
 // Helper Functions
@@ -274,10 +271,6 @@ void Game::movePrompt(){
     this->sheepToStay = 1;
     this->sheepToLeave = prevSpace->getNumSheep() - 1;
 
-    std::cout << "LOOK HERE" << endl;
-    std::cout << this << endl;
-
-
     //prompt user in popup
     popup = new QWidget();
 
@@ -293,24 +286,28 @@ void Game::movePrompt(){
     migrateLabel->setAlignment(Qt::AlignHCenter);
 
     // create spinbox
-    QSpinBox *migrateSpinbox = new QSpinBox;
+    migrateSpinbox = new QSpinBox;
     migrateSpinbox->setRange(1, prevSpace->getNumSheep()-1);
     migrateSpinbox->setSingleStep(1);
-    migrateSpinbox->setValue(2);
+    migrateSpinbox->setValue(prevSpace->getNumSheep()-1);
     migrateSpinbox->setFixedHeight(50);
     migrateSpinbox->setFixedWidth(200);
     migrateSpinbox->setAlignment(Qt::AlignHCenter);
-    //connect(migrateSpinbox, SIGNAL(valueChanged(int)), this, SLOT(setMigrateNums()));
+    connect(migrateSpinbox, SIGNAL(valueChanged(int)), this, SLOT(setMigrateNums()));
+
+    migrateClose = new QPushButton("Close Window");
+    connect(migrateClose, SIGNAL(clicked()), popup, SLOT(close()));
+
     migrateLayout->addWidget(migrateLabel);
     migrateLayout->addWidget(migrateSpinbox);
+    migrateLayout->addWidget(migrateClose);
 
     //set layout
     migrateGroup->setLayout(migrateLayout);
     layout->addWidget(migrateGroup);
+
     popup->setLayout(layout);
-
     popup->show();
-
 }
 
 void Game::migrate(){
@@ -338,8 +335,7 @@ void Game::disconnectSpaces() {
     }
 }
 
-void Game::incrementTurn()
-{
+void Game::incrementTurn(){
     whoseTurn = (whoseTurn + 1) % numPlayers;
     if (state == 1) {
         if (whoseTurn == 0) {
@@ -377,7 +373,6 @@ void Game::setNumFromSpin(){
 }
 
 void Game::setMigrateNums(){
-    std::cout << "in setMigrateNums" << endl;
     int migrating = migrateSpinbox->value();
     sheepToLeave = migrating;
     sheepToStay = prevSpace->getNumSheep() - migrating;

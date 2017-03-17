@@ -9,6 +9,7 @@
 #include "board.h"
 #include "player.h"
 #include <QSpinBox>
+#include <QPushButton>
 
 class QGroupBox;
 
@@ -66,6 +67,7 @@ private:
     int numPlayers;
     QSpinBox *playerSpinBox;
     QSpinBox *migrateSpinbox;
+    QPushButton* migrateClose;
     std::vector<Player*> players = std::vector<Player*>();
     Space* curSpace;
     Space* prevSpace;
