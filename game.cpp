@@ -76,7 +76,7 @@ void Game::start(){
     displayLayout->addWidget(winnerLabel);
     displayGroup->setLayout(displayLayout);
     layout->addWidget(displayGroup);
-    layout->setAlignment(Qt::AlignTop);
+    layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
     setLayout(layout);
 
     runRound0();
