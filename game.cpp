@@ -156,9 +156,12 @@ void Game::endGame() {
     for (auto it = sums.begin(); it != sums.end(); it++) {
         if ((*it) > max) { 
             max = (*it);
+            winner = it - sums.begin();
         }
-        
     }
+
+    char* colors[4] = { "Red", "Blue", "Black", "White" };
+    std::cout << colors[winner]  << " player wins!" << std::endl;
     //for every tile in player's spaces
     //get the tile's number and add it to accumulator
     //the player with the greatest sum wins
