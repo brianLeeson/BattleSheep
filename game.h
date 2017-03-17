@@ -60,6 +60,7 @@ public slots:
     void beginMove();
     void endMove();
     void setMigrateNums();
+    void closePopUp();
 
 private:
     std::map<int, QString> states;

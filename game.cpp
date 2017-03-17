@@ -141,7 +141,6 @@ void Game::beginMove() {
         nextSpace = highlightTarget(nextSpace, direction);
         connect(nextSpace,SIGNAL(clicked()),this,SLOT(endMove()));
     }
-    //prompt user for values for migration
     movePrompt();
 }
 
@@ -341,7 +340,7 @@ void Game::movePrompt(){
     connect(migrateSpinbox, SIGNAL(valueChanged(int)), this, SLOT(setMigrateNums()));
 
     migrateClose = new QPushButton("Close Window");
-    connect(migrateClose, SIGNAL(clicked()), popup, SLOT(close()));
+    connect(migrateClose, SIGNAL(clicked()), this, SLOT(closePopUp()));
 
     migrateLayout->addWidget(migrateLabel);
     migrateLayout->addWidget(migrateSpinbox);
@@ -353,6 +352,20 @@ void Game::movePrompt(){
 
     popup->setLayout(layout);
     popup->show();
+}
+
+void Game::closePopUp() {
+    popup->close();
+
+    std::vector<Space*> spaces = board->getSpaces();
+    for (auto it = spaces.begin(); it != spaces.end(); it++) {
+        Space* space = *it;
+        if (space->getColor() == Qt::gray) {
+            space->setColor(Qt::green, "");
+        }
+    }
+
+    runGame();
 }
 
 void Game::migrate(){
