@@ -37,6 +37,7 @@ public:
     void runGame();
     void runRound0();
     void endGame();
+    void BFS(Space* start, int* sum);
 
     void disconnectSpaces();
     std::vector<QString> getLegalDirections(Space *origin);

@@ -136,39 +136,63 @@ void Game::endGame() {
     std::cout << "The game is now over." << std::endl;
     disconnectSpaces();
 
-    int curSum = 0;
-    std::vector<int> sums;
+    std::map<Qt::GlobalColor, int> scores;
+    std::vector<Space*> spaces = board->getSpaces();
+    for (auto it = spaces.begin(); it != spaces.end(); it++) {
+         scores[(*it)->getColor()] += 1;
+    }
+
+    int max = 0;
+    Qt::GlobalColor winner;
+    for (auto it = scores.begin(); it != scores.end(); it++) {
+        if ((*it).second > max) { 
+            max = (*it).second;
+            winner = (*it).first;
+        }
+    }
+
+    int curTieBreakerMax = 0;
+    int bfsResult;
+    int curTieWinner;
     Player* curPlayer;
     std::vector<Space*> occSpaces;
     for (int i = 0; i < numPlayers; i++) {
         curPlayer = players[i];
         occSpaces = curPlayer->getOccupiedSpaces();
         for (auto it = occSpaces.begin(); it != occSpaces.end(); it++) {
-            curSum += (*it)->getNumSheep();
-        }
-        sums.push_back(curSum);
-        curSum = 0;
-    }
-
-
-    int winner;
-    int max = 0;
-    for (auto it = sums.begin(); it != sums.end(); it++) {
-        if ((*it) > max) { 
-            max = (*it);
-            winner = it - sums.begin();
+	    BFS((*it), &bfsResult);            
+            if (bfsResult > curTieBreakerMax) {
+                curTieBreakerMax = bfsResult;
+                curTieWinner = i;
+            }
         }
     }
+
 
     char* colors[4] = { "Red", "Blue", "Black", "White" };
-    std::cout << colors[winner]  << " player wins!" << std::endl;
-    //for every tile in player's spaces
-    //get the tile's number and add it to accumulator
-    //the player with the greatest sum wins
+        
+    std::cout << winnerColor  << " player wins!" << std::endl;
+    std::cout << "but " << curTieWinner << " if there was a tie " << std::endl;
+
+    
+    
+
     //if there is a tie, then use BFS to calculate winner
 
 
     // needs definition
+}
+
+void Game::BFS(Space* start, int* sum) {
+    start->visited = true;
+    sum += 1;
+
+    std::map<QString, Space*> adjacentSpaces = start->getAdjacentSpaces();
+    for (auto it = adjacentSpaces.begin(); it != adjacentSpaces.end(); it++) {
+        if (((*it).second->getColor() == start->getColor()) && !((*it).second->visited)) {
+            Game::BFS((*it).second, sum);
+        }
+    }
 }
 
 void Game::displayMainMenu(){

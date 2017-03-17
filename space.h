@@ -37,6 +37,8 @@ class Space:public QObject, public QGraphicsPolygonItem {
         int getXpos() const;
         void setXpos(int value);
 
+        bool visited = false;
+
 signals:
         void clicked();
 private:
