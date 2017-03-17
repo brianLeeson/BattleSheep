@@ -35,7 +35,7 @@ Space::Space(QGraphicsItem *parent) {
 
     //draw the text
     text = new QGraphicsTextItem("",this);
-    text->setPos(15,60);
+    text->setPos(15,55);
     text->setDefaultTextColor(Qt::green);
 
     setAcceptHoverEvents(true);
@@ -50,9 +50,10 @@ void Space::setColor(Qt::GlobalColor color, QString imageRef)
 {
     this->color = color;
 
-    //QPixmap image(imageRef);
     QGraphicsPixmapItem *pm = game->scene->addPixmap(QPixmap(imageRef).scaledToWidth(45));
     pm->setPos(xpos, ypos+10);
+
+    //text->setDefaultTextColor(Qt::white);
 
     if (imageRef == "") {
         QBrush brush;
@@ -72,7 +73,7 @@ void Space::setNumSheep(int numSheep)
     this->numSheep = numSheep;
     this->text->setPlainText(QString::number(numSheep));
     if (numSheep > 9) {
-        this->text->setPos(12,60);
+        this->text->setPos(12,55);
     }
 }
 
