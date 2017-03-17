@@ -39,7 +39,7 @@ Game::Game(QWidget *parent){
 void Game::start(){
     // clear the screen
     scene->clear();
-    setFixedSize(1024,700);
+    setFixedSize(1024,1000);
     delete playerLabel;
     delete playerSpinBox;
     delete this->layout();
@@ -61,17 +61,17 @@ void Game::start(){
 
     // Generate a board
     board = new Board();
-    board->placeSpaces(50,100,2*getNumPlayers(),8);
+    board->placeSpaces(512-70*getNumPlayers(),0,2*getNumPlayers(),8);
     state = 1;
 
     //current player label
     turnLabel = new QLabel(QString("Turn: Red"));
-    turnLabel->setFixedHeight(20);
+    turnLabel->setFixedHeight(10);
     turnLabel->setFixedWidth(200);
 
     //winner label
     winnerLabel = new QLabel(QString("Winner: no one"));
-    winnerLabel->setFixedHeight(20);
+    winnerLabel->setFixedHeight(10);
     winnerLabel->setFixedWidth(200);
 
     QHBoxLayout *layout = new QHBoxLayout;
@@ -207,7 +207,6 @@ void Game::endGame() {
         }
     }
 
-
     char* colors[4] = { "Red", "Blue", "Black", "White" };
     QString winnerColor;
     if (winner == Qt::red) {
@@ -223,16 +222,12 @@ void Game::endGame() {
         winnerColor = "White";
     }
 
-    QString otherWinner = "";
-    //std::cout << winnerColor  << " player wins!" << std::endl;
+    QString winText = "Winner: ";
     if (hasTie) {
-        //std::cout << "but there was a tie so " << colors[curTieWinner] << " player wins." << std::endl;
-        otherWinner = colors[curTieWinner];
+        winnerColor = colors[curTieWinner];
+    } 
 
-    }
-
-    QString winText = "Winner(s): ";
-    winnerLabel->setText(winText + winnerColor + otherWinner);
+    winnerLabel->setText(winText + winnerColor);
 }
 
 void Game::BFS(Space* start, int* sum) {
