@@ -144,12 +144,15 @@ void Game::endGame() {
     }
 
     int max = 0;
+    bool hasTie;
     Qt::GlobalColor winner;
     for (auto it = scores.begin(); it != scores.end(); it++) {
-        if ((*it).second > max) { 
+        if ((*it).second > max) {
+            hasTie = false;
             max = (*it).second;
-            std::cout << "changing max to " << max << " , " << (*it).first << " is new winner" << std::endl;
             winner = (*it).first;
+        } else if ((*it).second == max) {
+            hasTie = true;
         }
     }
 
@@ -164,7 +167,6 @@ void Game::endGame() {
         for (auto it = occSpaces.begin(); it != occSpaces.end(); it++) {
 	    BFS((*it), &bfsResult);            
             if (bfsResult > curTieBreakerMax) {
-                std::cout << "bfsResult was " << bfsResult << std::endl;
                 curTieBreakerMax = bfsResult;
                 curTieWinner = i;
             }
@@ -189,8 +191,9 @@ void Game::endGame() {
     }
 
     std::cout << winnerColor  << " player wins!" << std::endl;
-    std::cout << "but " << colors[curTieWinner] << " if there was a tie " << std::endl;
-
+    if (hasTie) {
+        std::cout << "but there was a tie so " << colors[curTieWinner] << " player wins." << std::endl;
+    }
     
     
 
@@ -202,7 +205,7 @@ void Game::endGame() {
 
 void Game::BFS(Space* start, int* sum) {
     start->visited = true;
-    sum += 1;
+    (*sum) += 1;
 
     std::map<QString, Space*> adjacentSpaces = start->getAdjacentSpaces();
     for (auto it = adjacentSpaces.begin(); it != adjacentSpaces.end(); it++) {
