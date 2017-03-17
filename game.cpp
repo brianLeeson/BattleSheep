@@ -2,12 +2,14 @@
 #include "board.h"
 #include "button.h"
 #include "player.h"
+//#include "spinbox.h"
 #include <QGraphicsTextItem>
 #include <QSpinBox>
 #include <QtWidgets>
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
 #include <iostream>
+#include <QLabel>
 
 Game::Game(QWidget *parent){
     states[0] = (QString) "generating tiles";
@@ -19,12 +21,13 @@ Game::Game(QWidget *parent){
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(1024,700);
-    setNumPlayers(2);
 
     // set up the scene
     scene = new QGraphicsScene();
     scene->setSceneRect(0,0,1024,700);
     setScene(scene);
+
+    setNumPlayers(2);
 }
 
 void Game::start(){
@@ -162,7 +165,15 @@ void Game::displayMainMenu(){
     connect(quitButton,SIGNAL(clicked()),this,SLOT(close()));
     scene->addItem(quitButton);
 
+    // create label
+    QLabel* playerLabel = new QLabel(QString("Number Of Players:"));
+    playerLabel->setFixedHeight(50);
+    playerLabel->setFixedWidth(200);
+    playerLabel->setAlignment(Qt::AlignHCenter);
+
+
     // create the spinbox
+    //Spinbox* playerSpinBox = new Spinbox(2,4); FAILED attempt.
     playerSpinBox = new QSpinBox;
     playerSpinBox->setRange(2, 4);
     playerSpinBox->setSingleStep(1);
@@ -171,10 +182,16 @@ void Game::displayMainMenu(){
     playerSpinBox->setFixedWidth(200);
     playerSpinBox->setAlignment(Qt::AlignHCenter);
     connect(playerSpinBox, SIGNAL(valueChanged(int)), this, SLOT(setNumFromSpin()));
-    scene->addWidget(playerSpinBox);
+
+    //label and spinbox layout
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(playerLabel);
+    layout->addWidget(playerSpinBox);
+    layout->setAlignment(Qt::AlignHCenter);
+    setLayout(layout);
+    this->layout()->setAlignment(Qt::AlignBottom);
+
 }
-
-
 
 // Helper Functions
 
