@@ -2,8 +2,8 @@
 #define BOARD_H
 
 #include <QList>
-#include "space.h"
 #include <vector>
+#include "space.h"
 
 class Board{
 public:

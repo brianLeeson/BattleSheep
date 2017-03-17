@@ -2,6 +2,8 @@ BattleSheep.pro.user
 BattleSheeo.pro.user.*
 Makefile
 battlesheep
+qrc_resources.cpp
+qrc_resources.o
 board.o
 button.o
 game.o
