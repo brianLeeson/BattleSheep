@@ -194,13 +194,6 @@ void Game::endGame() {
     if (hasTie) {
         std::cout << "but there was a tie so " << colors[curTieWinner] << " player wins." << std::endl;
     }
-    
-    
-
-    //if there is a tie, then use BFS to calculate winner
-
-
-    // needs definition
 }
 
 void Game::BFS(Space* start, int* sum) {
