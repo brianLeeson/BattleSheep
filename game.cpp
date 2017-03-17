@@ -12,6 +12,8 @@
 #include <QLabel>
 #include <QPushButton>
 
+const std::map<Qt::GlobalColor, char*> colorMap;
+
 Game::Game(QWidget *parent){
     states[0] = (QString) "generating tiles";
     states[1] = (QString) "placing sheep";
@@ -29,6 +31,11 @@ Game::Game(QWidget *parent){
     setScene(scene);
 
     setNumPlayers(2);
+
+    colorMap[Qt::red] = "Red";
+    colorMap[Qt::blue] = "Blue";
+    colorMap[Qt::black] = "Black";
+    colorMap[Qt::white] = "White";
 }
 
 void Game::start(){
@@ -96,11 +103,12 @@ void Game::runRound0() {
 void Game::runGame() {
     std::cout << "It is Round " << round << "." << std::endl;
     std::cout << "It is " << players[whoseTurn]->getColor() << "'s turn." << std::endl;
-    QString turn = "Turn: ";
-    QString player = "SAM PUT COLOR HERE";
-    turnLabel->setText(turn + player);
 
     Player* curPlayer = players[whoseTurn];
+    QString turn = "Turn: ";
+    char* player = colorMap.find(curPlayer->getColor()).second;
+    turnLabel->setText(turn + player);
+
     std::vector<Space*> legalStarts;
     std::vector<Space*> occupiedSpaces = curPlayer->getOccupiedSpaces();
 
