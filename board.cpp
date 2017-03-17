@@ -52,7 +52,7 @@ void Board::placeSpaces(int x, int y, int cols, int rows){
 std::vector<Space*> Board::createSpaceColumn(int x, int y, int numOfRows){
     std::vector<Space*> column;
     Space* space;
-    // creates a column of Hexes at the specified location with the specified
+    // creates a column of Spaces at the specified location with the specified
     // number of rows
     for (size_t i = 0, n = numOfRows; i < n; i++){
         space = new Space();
