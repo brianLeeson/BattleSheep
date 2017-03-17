@@ -10,6 +10,7 @@
 #include "player.h"
 #include <QSpinBox>
 #include <QPushButton>
+#include <QLabel>
 
 class QGroupBox;
 
@@ -74,6 +75,9 @@ private:
     int sheepToLeave;
     int sheepToStay;
     QWidget *popup;
+    QLabel* playerLabel;
+    QLabel* turnLabel;
+    QLabel* winnerLabel;
 };
 
 #endif // GAME_H
