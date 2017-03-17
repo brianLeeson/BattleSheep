@@ -34,7 +34,7 @@ Game::Game(QWidget *parent){
 void Game::start(){
     // clear the screen
     scene->clear();
-    setFixedSize(200*getNumPlayers(),800);
+    setFixedSize(1024,700);
 
     Qt::GlobalColor playerColors[4] = { Qt::red, Qt::blue, Qt::black, Qt::white };
     QString playerImages[4] = { ":/assets/red.png", ":/assets/blue.png", ":/assets/black.png", ":/assets/white.png" };
@@ -49,9 +49,8 @@ void Game::start(){
         players.push_back(newPlayer);
     }
 
-    // test code TODO remove
     board = new Board();
-    board->placeSpaces(50,10,2*getNumPlayers(),8);
+    board->placeSpaces(50,100,2*getNumPlayers(),8);
     state = 1;
     runRound0();
 }
