@@ -34,6 +34,11 @@ Game::Game(QWidget *parent){
 void Game::start(){
     // clear the screen
     scene->clear();
+    delete playerLabel;
+    delete playerSpinBox;
+    delete this->layout();
+
+    delete layout();
     setFixedSize(200*getNumPlayers(),800);
 
     Qt::GlobalColor playerColors[4] = { Qt::red, Qt::blue, Qt::black, Qt::white };
@@ -49,10 +54,31 @@ void Game::start(){
         players.push_back(newPlayer);
     }
 
-    // test code TODO remove
+    // Generate a board
     board = new Board();
     board->placeSpaces(50,10,2*getNumPlayers(),8);
     state = 1;
+
+    //current player label
+    turnLabel = new QLabel(QString("Turn: Red"));
+    turnLabel->setFixedHeight(20);
+    turnLabel->setFixedWidth(200);
+
+    //winner label
+    winnerLabel = new QLabel(QString("Winner: no one"));
+    winnerLabel->setFixedHeight(20);
+    winnerLabel->setFixedWidth(200);
+
+    QHBoxLayout *layout = new QHBoxLayout;
+    QGroupBox *displayGroup = new QGroupBox(tr(""));
+    QHBoxLayout *displayLayout = new QHBoxLayout;
+    displayLayout->addWidget(turnLabel);
+    displayLayout->addWidget(winnerLabel);
+    displayGroup->setLayout(displayLayout);
+    layout->addWidget(displayGroup);
+    layout->setAlignment(Qt::AlignTop);
+    setLayout(layout);
+
     runRound0();
 }
 
@@ -70,6 +96,9 @@ void Game::runRound0() {
 void Game::runGame() {
     std::cout << "It is Round " << round << "." << std::endl;
     std::cout << "It is " << players[whoseTurn]->getColor() << "'s turn." << std::endl;
+    QString turn = "Turn: ";
+    QString player = "SAM PUT COLOR HERE";
+    turnLabel->setText(turn + player);
 
     Player* curPlayer = players[whoseTurn];
     std::vector<Space*> legalStarts;
@@ -165,7 +194,7 @@ void Game::displayMainMenu(){
     scene->addItem(quitButton);
 
     // create label
-    QLabel* playerLabel = new QLabel(QString("Number Of Players:"));
+    playerLabel = new QLabel(QString("Number Of Players:"));
     playerLabel->setFixedHeight(50);
     playerLabel->setFixedWidth(200);
     playerLabel->setAlignment(Qt::AlignHCenter);
