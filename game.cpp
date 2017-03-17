@@ -29,17 +29,22 @@ Game::Game(QWidget *parent){
     setScene(scene);
 
     setNumPlayers(2);
+
+    colorMap[Qt::red] = "Red";
+    colorMap[Qt::blue] = "Blue";
+    colorMap[Qt::black] = "Black";
+    colorMap[Qt::white] = "White";
 }
 
 void Game::start(){
     // clear the screen
     scene->clear();
+    setFixedSize(1024,1000);
     delete playerLabel;
     delete playerSpinBox;
     delete this->layout();
 
     delete layout();
-    setFixedSize(200*getNumPlayers(),800);
 
     Qt::GlobalColor playerColors[4] = { Qt::red, Qt::blue, Qt::black, Qt::white };
     QString playerImages[4] = { ":/assets/red.png", ":/assets/blue.png", ":/assets/black.png", ":/assets/white.png" };
@@ -56,7 +61,7 @@ void Game::start(){
 
     // Generate a board
     board = new Board();
-    board->placeSpaces(50,10,2*getNumPlayers(),8);
+    board->placeSpaces(512-70*getNumPlayers(),0,2*getNumPlayers(),8);
     state = 1;
 
     //current player label
@@ -73,7 +78,7 @@ void Game::start(){
     QGroupBox *displayGroup = new QGroupBox(tr(""));
     QHBoxLayout *displayLayout = new QHBoxLayout;
     displayLayout->addWidget(turnLabel);
-    displayLayout->addWidget(winnerLabel);
+    //displayLayout->addWidget(winnerLabel);
     displayGroup->setLayout(displayLayout);
     layout->addWidget(displayGroup);
     layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
@@ -96,11 +101,10 @@ void Game::runRound0() {
 void Game::runGame() {
     std::cout << "It is Round " << round << "." << std::endl;
     std::cout << "It is " << players[whoseTurn]->getColor() << "'s turn." << std::endl;
-    QString turn = "Turn: ";
-    QString player = "SAM PUT COLOR HERE";
-    turnLabel->setText(turn + player);
 
     Player* curPlayer = players[whoseTurn];
+
+
     std::vector<Space*> legalStarts;
     std::vector<Space*> occupiedSpaces = curPlayer->getOccupiedSpaces();
 
@@ -203,7 +207,6 @@ void Game::endGame() {
         }
     }
 
-
     char* colors[4] = { "Red", "Blue", "Black", "White" };
     QString winnerColor;
     if (winner == Qt::red) {
@@ -219,16 +222,12 @@ void Game::endGame() {
         winnerColor = "White";
     }
 
-    QString otherWinner = "";
-    //std::cout << winnerColor  << " player wins!" << std::endl;
+    QString winText = "Winner: ";
     if (hasTie) {
-        //std::cout << "but there was a tie so " << colors[curTieWinner] << " player wins." << std::endl;
-        otherWinner = colors[curTieWinner];
+        winnerColor = colors[curTieWinner];
+    } 
 
-    }
-
-    QString winText = "Winner(s): ";
-    winnerLabel->setText(winText + winnerColor + otherWinner);
+    turnLabel->setText(winText + winnerColor);
 }
 
 void Game::BFS(Space* start, int* sum) {
@@ -386,6 +385,11 @@ void Game::disconnectSpaces() {
 
 void Game::incrementTurn(){
     whoseTurn = (whoseTurn + 1) % numPlayers;
+
+    QString turn = "Turn: ";
+    char* player = (*colorMap.find(players[whoseTurn]->getColor())).second;
+    turnLabel->setText(turn + player);
+
     if (state == 1) {
         if (whoseTurn == 0) {
             state++;

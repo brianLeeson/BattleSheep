@@ -51,6 +51,7 @@ public:
     // public attributes
     QGraphicsScene* scene;
     Board* board;
+    std::map<Qt::GlobalColor, char*> colorMap;
 
 public slots:
     void start();
