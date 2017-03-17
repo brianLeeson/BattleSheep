@@ -11,6 +11,7 @@
 #include <iostream>
 #include <QLabel>
 #include <QPushButton>
+#include <QRect>
 
 Game::Game(QWidget *parent){
     states[0] = (QString) "generating tiles";
@@ -68,17 +69,13 @@ void Game::start(){
     turnLabel = new QLabel(QString("Turn: Red"));
     turnLabel->setFixedHeight(20);
     turnLabel->setFixedWidth(200);
-
-    //winner label
-    winnerLabel = new QLabel(QString("Winner: no one"));
-    winnerLabel->setFixedHeight(20);
-    winnerLabel->setFixedWidth(200);
+    turnLabel->setAlignment(Qt::AlignCenter);
+    turnLabel->setFrameStyle(QFrame::Panel | QFrame::Plain);
 
     QHBoxLayout *layout = new QHBoxLayout;
     QGroupBox *displayGroup = new QGroupBox(tr(""));
     QHBoxLayout *displayLayout = new QHBoxLayout;
     displayLayout->addWidget(turnLabel);
-    //displayLayout->addWidget(winnerLabel);
     displayGroup->setLayout(displayLayout);
     layout->addWidget(displayGroup);
     layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
@@ -275,6 +272,7 @@ void Game::displayMainMenu(){
     playerLabel->setFixedHeight(50);
     playerLabel->setFixedWidth(200);
     playerLabel->setAlignment(Qt::AlignHCenter);
+    playerLabel->setFrameStyle(QFrame::Panel | QFrame::Plain);
 
     // create the spinbox
     playerSpinBox = new QSpinBox;
@@ -283,16 +281,15 @@ void Game::displayMainMenu(){
     playerSpinBox->setValue(2);
     playerSpinBox->setFixedHeight(50);
     playerSpinBox->setFixedWidth(200);
-    playerSpinBox->setAlignment(Qt::AlignHCenter);
+    playerSpinBox->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     connect(playerSpinBox, SIGNAL(valueChanged(int)), this, SLOT(setNumFromSpin()));
 
     //label and spinbox layout
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(playerLabel);
     layout->addWidget(playerSpinBox);
-    layout->setAlignment(Qt::AlignHCenter);
+    layout->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
     setLayout(layout);
-    this->layout()->setAlignment(Qt::AlignBottom);
 }
 
 // Helper Functions
