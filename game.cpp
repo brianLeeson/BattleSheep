@@ -163,6 +163,78 @@ void Game::endMove() {
 void Game::endGame() {
     std::cout << "The game is now over." << std::endl;
     disconnectSpaces();
+
+    std::map<Qt::GlobalColor, int> scores;
+    std::vector<Space*> spaces = board->getSpaces();
+    for (auto it = spaces.begin(); it != spaces.end(); it++) {
+         if ((*it)->getColor() != Qt::green) {
+             scores[(*it)->getColor()] += 1;
+         }
+    }
+
+    int max = 0;
+    bool hasTie;
+    Qt::GlobalColor winner;
+    for (auto it = scores.begin(); it != scores.end(); it++) {
+        if ((*it).second > max) {
+            hasTie = false;
+            max = (*it).second;
+            winner = (*it).first;
+        } else if ((*it).second == max) {
+            hasTie = true;
+        }
+    }
+
+    int curTieBreakerMax = 0;
+    int bfsResult = 0;
+    int curTieWinner;
+    Player* curPlayer;
+    std::vector<Space*> occSpaces;
+    for (int i = 0; i < numPlayers; i++) {
+        curPlayer = players[i];
+        occSpaces = curPlayer->getOccupiedSpaces();
+        for (auto it = occSpaces.begin(); it != occSpaces.end(); it++) {
+	    BFS((*it), &bfsResult);            
+            if (bfsResult > curTieBreakerMax) {
+                curTieBreakerMax = bfsResult;
+                curTieWinner = i;
+            }
+            bfsResult = 0;
+        }
+    }
+
+
+    char* colors[4] = { "Red", "Blue", "Black", "White" };
+    char* winnerColor;
+    if (winner == Qt::red) {
+        winnerColor = "Red";
+    }
+    if (winner == Qt::blue) {
+        winnerColor = "Blue";
+    }
+    if (winner == Qt::black) {
+        winnerColor = "Black";
+    }
+    if (winner == Qt::white) {
+        winnerColor = "White";
+    }
+
+    std::cout << winnerColor  << " player wins!" << std::endl;
+    if (hasTie) {
+        std::cout << "but there was a tie so " << colors[curTieWinner] << " player wins." << std::endl;
+    }
+}
+
+void Game::BFS(Space* start, int* sum) {
+    start->visited = true;
+    (*sum) += 1;
+
+    std::map<QString, Space*> adjacentSpaces = start->getAdjacentSpaces();
+    for (auto it = adjacentSpaces.begin(); it != adjacentSpaces.end(); it++) {
+        if (((*it).second->getColor() == start->getColor()) && !((*it).second->visited)) {
+            Game::BFS((*it).second, sum);
+        }
+    }
 }
 
 void Game::displayMainMenu(){
@@ -296,7 +368,6 @@ std::vector<QString> Game::getLegalDirections(Space* origin) {
             legalDirections.push_back(it->first);
         }
     }
-
     return legalDirections;
 }
 
