@@ -213,7 +213,7 @@ void Game::endGame() {
 
 
     char* colors[4] = { "Red", "Blue", "Black", "White" };
-    char* winnerColor;
+    QString winnerColor;
     if (winner == Qt::red) {
         winnerColor = "Red";
     }
@@ -227,10 +227,16 @@ void Game::endGame() {
         winnerColor = "White";
     }
 
-    std::cout << winnerColor  << " player wins!" << std::endl;
+    QString otherWinner = "";
+    //std::cout << winnerColor  << " player wins!" << std::endl;
     if (hasTie) {
-        std::cout << "but there was a tie so " << colors[curTieWinner] << " player wins." << std::endl;
+        //std::cout << "but there was a tie so " << colors[curTieWinner] << " player wins." << std::endl;
+        otherWinner = colors[curTieWinner];
+
     }
+
+    QString winText = "Winner(s): ";
+    winnerLabel->setText(winText + winnerColor + otherWinner);
 }
 
 void Game::BFS(Space* start, int* sum) {
