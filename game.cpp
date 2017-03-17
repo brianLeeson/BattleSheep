@@ -244,7 +244,7 @@ void Game::movePrompt(){
     migrateSpinbox->setFixedHeight(50);
     migrateSpinbox->setFixedWidth(200);
     migrateSpinbox->setAlignment(Qt::AlignHCenter);
-    connect(migrateSpinbox, SIGNAL(valueChanged(int)), this, SLOT(setMigrateNums()));
+    //connect(migrateSpinbox, SIGNAL(valueChanged(int)), this, SLOT(setMigrateNums()));
     migrateLayout->addWidget(migrateLabel);
     migrateLayout->addWidget(migrateSpinbox);
 
